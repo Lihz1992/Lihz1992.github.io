@@ -457,25 +457,17 @@
 
       
         
-          
-            <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
-<li><p>声明</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> 变量名字 类型 = 表达式</div><div class="line"><span class="number">1.</span> 表达式被省略，零值初始化</div></pre></td></tr></table></figure>
-</li>
-<li><p>简短变量声明</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">名字 := 表达式</div><div class="line"><span class="number">1.</span> 变量的类型根据表达式推导</div><div class="line"><span class="number">2.</span> 简短变量声明左边的变量如非第一次被声明，则:=该语句对其做赋值行为</div></pre></td></tr></table></figure>
-</li>
-<li><p>指针</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.</span> 取地址 x := &amp;y</div><div class="line"><span class="number">2.</span> 由指针修改值 *x = value</div><div class="line"><span class="number">3.</span> 每次对一个变量取地址，或者复制指针，我们都是为原变量创建了新的别名</div><div class="line"><span class="number">4.</span> 指针特别有价值的地方在于可以不用名字而访问一个变量</div></pre></td></tr></table></figure>
-</li>
-<li><p>new 函数</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.</span> p := <span class="built_in">new</span>(<span class="keyword">int</span>)</div><div class="line"><span class="number">2.</span> 预定义函数，非关键字 在函数参数中<span class="built_in">new</span>被定义为某类型变量名时，在该函数声明周期内无法使用内置的<span class="built_in">new</span>函数</div></pre></td></tr></table></figure>
-</li>
-<li><p>声明周期</p>
+          <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
+<li>声明<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> 变量名字 类型 = 表达式</div><div class="line"><span class="number">1.</span> 表达式被省略，零值初始化</div></pre></td></tr></table></figure>
 </li>
 </ul>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/07/go/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
