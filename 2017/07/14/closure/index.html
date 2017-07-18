@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Python,函数闭包,装饰器," />
 
 
 
@@ -93,15 +93,17 @@
 
 
 
-<meta name="description" content="You jump, I jump">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lihz&#39;s workspace">
-<meta property="og:url" content="http://lihz1992.github.io/index.html">
+<meta name="description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量； 12345678def make_average():    series = []    def averager(new_v">
+<meta name="keywords" content="Python,函数闭包,装饰器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="closure &amp; decorator">
+<meta property="og:url" content="http://lihz1992.github.io/2017/07/14/closure/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="You jump, I jump">
+<meta property="og:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量； 12345678def make_average():    series = []    def averager(new_v">
+<meta property="og:updated_time" content="2017-07-18T01:36:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lihz&#39;s workspace">
-<meta name="twitter:description" content="You jump, I jump">
+<meta name="twitter:title" content="closure &amp; decorator">
+<meta name="twitter:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量； 12345678def make_average():    series = []    def averager(new_v">
 
 
 
@@ -129,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://lihz1992.github.io/"/>
+  <link rel="canonical" href="http://lihz1992.github.io/2017/07/14/closure/"/>
 
 
 
 
 
-  <title>Lihz's workspace</title>
+  <title>closure & decorator | Lihz's workspace</title>
   
 
 
@@ -160,9 +162,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-   page-home 
- ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -255,9 +255,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -283,9 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/14/closure/" itemprop="url">closure & decorator</a></h1>
+          <h1 class="post-title" itemprop="name headline">closure & decorator</h1>
         
 
         <div class="post-meta">
@@ -332,8 +330,7 @@
       
 
       
-        
-          <h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><h3 id="Python变量作用域规则"><a href="#Python变量作用域规则" class="headerlink" title="Python变量作用域规则"></a>Python变量作用域规则</h3><ol>
+        <h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><h3 id="Python变量作用域规则"><a href="#Python变量作用域规则" class="headerlink" title="Python变量作用域规则"></a>Python变量作用域规则</h3><ol>
 <li>Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；</li>
 </ol>
 <h3 id="Base"><a href="#Base" class="headerlink" title="Base"></a>Base</h3><ol>
@@ -342,175 +339,105 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def make_average():</div><div class="line">    series = []</div><div class="line"></div><div class="line">    def averager(new_value):</div><div class="line">        # series 自由变量(未在本地作用域绑定的变量)</div><div class="line">        series.append(new_value)</div><div class="line">        return sum(series)/len(series)</div><div class="line">    return averager</div></pre></td></tr></table></figure>
 </li>
 <li><p>闭包是一种函数，会保留定义函数时存在的自由变量的绑定，当调用函数时，虽然定义作用域不可用了，仍可使用那些绑定的值</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/14/closure/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+<a id="more"></a>
+<h3 id="nonlocal"><a href="#nonlocal" class="headerlink" title="nonlocal"></a>nonlocal</h3></li>
+<li><p>对数字、字符串、元组等不可变类型，只能读取，不能更新。尝试重新绑定，会隐式创建局部变量，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def make_average():</div><div class="line">    count = 0</div><div class="line">    total = 0</div><div class="line"></div><div class="line">    def averager(new_value):</div><div class="line">        count += 1             # 隐式创建局部变量count, 导致UnboundLocalError: local variable &apos;count&apos; referenced before assignment</div><div class="line">        total += new_value</div><div class="line">        return total / count</div><div class="line">    return averager</div></pre></td></tr></table></figure>
+</li>
+<li><p>nonlocal 声明，把变量标记为自由变量，即使在函数中为变量赋予新值，也会变成自由变量；</p>
+</li>
+<li>如果为nonlocal声明的变量赋予新值，闭包中保存的绑定会更新；</li>
+</ol>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3><ol>
+<li>装饰器是可调用的对象</li>
+<li>把被装饰的函数替换成其它函数</li>
+<li>装饰器在加载模块时立即执行</li>
+<li>装饰器的典型行为：把被装饰的函数替换成新函数，二者接受相同的参数，而且(通常)返回被装饰的函数本该返回的值，附带一些额外操作</li>
+</ol>
+<h3 id="装饰器何时被执行"><a href="#装饰器何时被执行" class="headerlink" title="装饰器何时被执行"></a>装饰器何时被执行</h3><ol>
+<li>装饰器在模块被导入时立即执行，被装饰的函数只在明确调用时运行；</li>
+<li>即导入时和运行时的区别</li>
+</ol>
+<h3 id="标准库中的装饰器"><a href="#标准库中的装饰器" class="headerlink" title="标准库中的装饰器"></a>标准库中的装饰器</h3><h4 id="lru-cache-leaset-recently-used"><a href="#lru-cache-leaset-recently-used" class="headerlink" title="lru_cache(leaset recently used)"></a>lru_cache(leaset recently used)</h4><ol>
+<li>作用: 将耗时的函数结果保存起来，避免传入相同参数时重复计算；</li>
+<li><p>可选参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">functools.lru_cache(maxsize=128, typed=False)</div><div class="line">maxsize: 指定存储多少个调用的结果；</div><div class="line">typed: True, 把不同的参数类型得到的结果分开存储，即把通常认为相等的浮点数和整数参数(1， 1.0)区分开</div></pre></td></tr></table></figure>
+</li>
+<li><p>lru_cache使用字典存储结果，结果字典键根据调用时传入的定位参数和关键字参数创建，因此被lru_cache装饰的函数，其所有参数必须是可散列的。</p>
+</li>
+</ol>
+<h4 id="singledispatch-单分派泛函数"><a href="#singledispatch-单分派泛函数" class="headerlink" title="singledispatch(单分派泛函数)"></a>singledispatch(单分派泛函数)</h4><p>1.</p>
+
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/07/go/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/07/go/" itemprop="url">go</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T15:31:23+08:00">
-                2017-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
-            
+            <a href="/tags/函数闭包/" rel="tag"># 函数闭包</a>
           
-
+            <a href="/tags/装饰器/" rel="tag"># 装饰器</a>
           
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
-<li><p>声明</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> 变量名字 类型 = 表达式</div><div class="line"><span class="number">1.</span> 表达式被省略，零值初始化</div></pre></td></tr></table></figure>
-</li>
-<li><p>简短变量声明</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">名字 := 表达式</div><div class="line"><span class="number">1.</span> 变量的类型根据表达式推导</div><div class="line"><span class="number">2.</span> 简短变量声明左边的变量如非第一次被声明，则:=该语句对其做赋值行为</div></pre></td></tr></table></figure>
-</li>
-<li><p>指针</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.</span> 取地址 x := &amp;y</div><div class="line"><span class="number">2.</span> 由指针修改值 *x = value</div><div class="line"><span class="number">3.</span> 每次对一个变量取地址，或者复制指针，我们都是为原变量创建了新的别名</div><div class="line"><span class="number">4.</span> 指针特别有价值的地方在于可以不用名字而访问一个变量</div></pre></td></tr></table></figure>
-</li>
-<li><p>new 函数</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.</span> p := <span class="built_in">new</span>(<span class="keyword">int</span>)</div><div class="line"><span class="number">2.</span> 预定义函数，非关键字 在函数参数中<span class="built_in">new</span>被定义为某类型变量名时，在该函数声明周期内无法使用内置的<span class="built_in">new</span>函数</div></pre></td></tr></table></figure>
-</li>
-<li><p>声明周期</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/07/go/" rel="next" title="go">
+                <i class="fa fa-chevron-left"></i> go
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -518,6 +445,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -537,8 +468,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -591,6 +531,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包"><span class="nav-number">1.</span> <span class="nav-text">闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python变量作用域规则"><span class="nav-number">1.1.</span> <span class="nav-text">Python变量作用域规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Base"><span class="nav-number">1.2.</span> <span class="nav-text">Base</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nonlocal"><span class="nav-number">1.3.</span> <span class="nav-text">nonlocal</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器"><span class="nav-number">2.</span> <span class="nav-text">装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#base"><span class="nav-number">2.1.</span> <span class="nav-text">base</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器何时被执行"><span class="nav-number">2.2.</span> <span class="nav-text">装饰器何时被执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准库中的装饰器"><span class="nav-number">2.3.</span> <span class="nav-text">标准库中的装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lru-cache-leaset-recently-used"><span class="nav-number">2.3.1.</span> <span class="nav-text">lru_cache(leaset recently used)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#singledispatch-单分派泛函数"><span class="nav-number">2.3.2.</span> <span class="nav-text">singledispatch(单分派泛函数)</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -711,10 +667,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
 
-  
+
 
   
 
