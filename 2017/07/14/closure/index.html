@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；">
+<meta name="description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量；">
 <meta name="keywords" content="Python,函数闭包,装饰器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="closure &amp; decorator">
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/14/closure/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；">
-<meta property="og:updated_time" content="2017-07-18T02:07:58.000Z">
+<meta property="og:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量；">
+<meta property="og:updated_time" content="2017-07-18T02:09:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="closure &amp; decorator">
-<meta name="twitter:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；">
+<meta name="twitter:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量；">
 
 
 
@@ -342,16 +342,16 @@
 
       
         <h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><h3 id="Python变量作用域规则"><a href="#Python变量作用域规则" class="headerlink" title="Python变量作用域规则"></a>Python变量作用域规则</h3><ol>
-<li>Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；<a id="more"></a>
-</li>
+<li>Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；</li>
 </ol>
 <h3 id="Base"><a href="#Base" class="headerlink" title="Base"></a>Base</h3><ol>
 <li>闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量；</li>
-<li><p>函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量；</p>
+<li>函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量；<a id="more"></a>
+</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def make_average():</div><div class="line">    series = []</div><div class="line"></div><div class="line">    def averager(new_value):</div><div class="line">        # series 自由变量(未在本地作用域绑定的变量)</div><div class="line">        series.append(new_value)</div><div class="line">        return sum(series)/len(series)</div><div class="line">    return averager</div></pre></td></tr></table></figure>
-</li>
-<li><p>闭包是一种函数，会保留定义函数时存在的自由变量的绑定，当调用函数时，虽然定义作用域不可用了，仍可使用那些绑定的值</p>
-</li>
+<ol>
+<li>闭包是一种函数，会保留定义函数时存在的自由变量的绑定，当调用函数时，虽然定义作用域不可用了，仍可使用那些绑定的值</li>
 </ol>
 <h3 id="nonlocal"><a href="#nonlocal" class="headerlink" title="nonlocal"></a>nonlocal</h3><ol>
 <li><p>对数字、字符串、元组等不可变类型，只能读取，不能更新。尝试重新绑定，会隐式创建局部变量，例如：</p>
