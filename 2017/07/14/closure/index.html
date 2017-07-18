@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/14/closure/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量； 12345678def make_average():    series = []    def averager(new_v">
-<meta property="og:updated_time" content="2017-07-18T02:11:43.000Z">
+<meta property="og:updated_time" content="2017-07-18T08:34:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="closure &amp; decorator">
 <meta name="twitter:description" content="闭包Python变量作用域规则 Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；  Base 闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量； 函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量； 12345678def make_average():    series = []    def averager(new_v">
@@ -379,7 +379,20 @@
 <li><p>lru_cache使用字典存储结果，结果字典键根据调用时传入的定位参数和关键字参数创建，因此被lru_cache装饰的函数，其所有参数必须是可散列的。</p>
 </li>
 </ol>
-<h4 id="singledispatch-单分派泛函数"><a href="#singledispatch-单分派泛函数" class="headerlink" title="singledispatch(单分派泛函数)"></a>singledispatch(单分派泛函数)</h4><p>1.</p>
+<h4 id="singledispatch-单分派泛函数"><a href="#singledispatch-单分派泛函数" class="headerlink" title="singledispatch(单分派泛函数)"></a>singledispatch(单分派泛函数)</h4><ol>
+<li>Python 不支持函数重载</li>
+<li><p>singledispatch装饰器用作将整体方案拆分成多个模块，使用@singledispatch装饰的普通函数将变成泛函数(generic function 根据第一个参数的类型，以不同方式执行相同操作的一组函数)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">from functools import singledispatch</div><div class="line">from collections import abc</div><div class="line">import numbers</div><div class="line">import html</div><div class="line"></div><div class="line"></div><div class="line">@singledispatch</div><div class="line">def htmlsize(obj):</div><div class="line">    pass</div><div class="line"></div><div class="line">@htmlsize.register(str)</div><div class="line">def _(text):</div><div class="line">    # do something</div><div class="line">    pass</div><div class="line"></div><div class="line">@htmlsize.register(numbers.Integral)</div><div class="line">def _(n):</div><div class="line">    # do something</div><div class="line">    pass</div><div class="line"></div><div class="line">@htmlsize.register(tuple)</div><div class="line">@htmlsize.register(abc.MutableSequence)</div><div class="line">def _(seq):</div><div class="line">    # do something</div><div class="line">    pass</div></pre></td></tr></table></figure>
+</li>
+<li><p>如2demo所示，注册的专门函数应该处理抽象基类(如numbers.Integral, abc.MutableSequence),而不应处理具体实现(int, list)，可使得代码支持这些抽象基类现有和未来具有的具体子类或虚拟子类</p>
+</li>
+<li>singledispatch机制的一个显著特征，可以在系统的任何地方和任何模块中注册专门函数</li>
+</ol>
+<h3 id="叠放装饰器"><a href="#叠放装饰器" class="headerlink" title="叠放装饰器"></a>叠放装饰器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@d1</div><div class="line">@d2</div><div class="line">def f():</div><div class="line">    print(&apos;f&apos;)</div></pre></td></tr></table></figure>
+<h3 id="参数化装饰器"><a href="#参数化装饰器" class="headerlink" title="参数化装饰器"></a>参数化装饰器</h3><ol>
+<li>创建一个装饰器工厂函数，参数传递与它，返回一个装饰器，再把它应用到要装饰的函数上<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def decorator(active=True):</div><div class="line">    def wrapped(func):</div><div class="line">        # do something</div><div class="line">        return func</div><div class="line">    return wrapped</div></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
     </div>
@@ -435,6 +448,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/18/query/" rel="prev" title="MySQL">
+                MySQL <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -513,7 +530,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -526,7 +543,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -561,7 +578,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包"><span class="nav-number">1.</span> <span class="nav-text">闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python变量作用域规则"><span class="nav-number">1.1.</span> <span class="nav-text">Python变量作用域规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Base"><span class="nav-number">1.2.</span> <span class="nav-text">Base</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nonlocal"><span class="nav-number">1.3.</span> <span class="nav-text">nonlocal</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器"><span class="nav-number">2.</span> <span class="nav-text">装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#base"><span class="nav-number">2.1.</span> <span class="nav-text">base</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器何时被执行"><span class="nav-number">2.2.</span> <span class="nav-text">装饰器何时被执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准库中的装饰器"><span class="nav-number">2.3.</span> <span class="nav-text">标准库中的装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lru-cache-leaset-recently-used"><span class="nav-number">2.3.1.</span> <span class="nav-text">lru_cache(leaset recently used)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#singledispatch-单分派泛函数"><span class="nav-number">2.3.2.</span> <span class="nav-text">singledispatch(单分派泛函数)</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包"><span class="nav-number">1.</span> <span class="nav-text">闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python变量作用域规则"><span class="nav-number">1.1.</span> <span class="nav-text">Python变量作用域规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Base"><span class="nav-number">1.2.</span> <span class="nav-text">Base</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nonlocal"><span class="nav-number">1.3.</span> <span class="nav-text">nonlocal</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器"><span class="nav-number">2.</span> <span class="nav-text">装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#base"><span class="nav-number">2.1.</span> <span class="nav-text">base</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰器何时被执行"><span class="nav-number">2.2.</span> <span class="nav-text">装饰器何时被执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准库中的装饰器"><span class="nav-number">2.3.</span> <span class="nav-text">标准库中的装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lru-cache-leaset-recently-used"><span class="nav-number">2.3.1.</span> <span class="nav-text">lru_cache(leaset recently used)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#singledispatch-单分派泛函数"><span class="nav-number">2.3.2.</span> <span class="nav-text">singledispatch(单分派泛函数)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#叠放装饰器"><span class="nav-number">2.4.</span> <span class="nav-text">叠放装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数化装饰器"><span class="nav-number">2.5.</span> <span class="nav-text">参数化装饰器</span></a></li></ol></li></ol></div>
             
 
           </div>
