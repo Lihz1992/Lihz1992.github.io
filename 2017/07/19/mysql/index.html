@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="MySQL," />
 
 
 
@@ -93,15 +93,17 @@
 
 
 
-<meta name="description" content="You jump, I jump">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lihz&#39;s workspace">
-<meta property="og:url" content="http://lihz1992.github.io/index.html">
+<meta name="description" content="逻辑架构 最上层 连接/线程处理(包括连接处理、授权认证、安全等) 第二层 查询解析、分析、优化、缓存、所有内置函数(日期、时间、数学和加密函数等)、跨存储引擎的功能(存储过程、触发器、视图等) 第三层 存储引擎，负责MySQL中数据的存储和提取，不同引擎有不同优缺点，服务器通过API与存储引擎通信，接口屏蔽了不同引擎之间的差异，使得差异对上层的查询过程透明  连接管理 每个客户端连接会在服务器进">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-Base">
+<meta property="og:url" content="http://lihz1992.github.io/2017/07/19/mysql/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="You jump, I jump">
+<meta property="og:description" content="逻辑架构 最上层 连接/线程处理(包括连接处理、授权认证、安全等) 第二层 查询解析、分析、优化、缓存、所有内置函数(日期、时间、数学和加密函数等)、跨存储引擎的功能(存储过程、触发器、视图等) 第三层 存储引擎，负责MySQL中数据的存储和提取，不同引擎有不同优缺点，服务器通过API与存储引擎通信，接口屏蔽了不同引擎之间的差异，使得差异对上层的查询过程透明  连接管理 每个客户端连接会在服务器进">
+<meta property="og:updated_time" content="2017-07-20T03:09:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lihz&#39;s workspace">
-<meta name="twitter:description" content="You jump, I jump">
+<meta name="twitter:title" content="MySQL-Base">
+<meta name="twitter:description" content="逻辑架构 最上层 连接/线程处理(包括连接处理、授权认证、安全等) 第二层 查询解析、分析、优化、缓存、所有内置函数(日期、时间、数学和加密函数等)、跨存储引擎的功能(存储过程、触发器、视图等) 第三层 存储引擎，负责MySQL中数据的存储和提取，不同引擎有不同优缺点，服务器通过API与存储引擎通信，接口屏蔽了不同引擎之间的差异，使得差异对上层的查询过程透明  连接管理 每个客户端连接会在服务器进">
 
 
 
@@ -129,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://lihz1992.github.io/"/>
+  <link rel="canonical" href="http://lihz1992.github.io/2017/07/19/mysql/"/>
 
 
 
 
 
-  <title>Lihz's workspace</title>
+  <title>MySQL-Base | Lihz's workspace</title>
   
 
 
@@ -160,9 +162,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-   page-home 
- ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -255,9 +255,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -283,9 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/19/mysql/" itemprop="url">MySQL-Base</a></h1>
+          <h1 class="post-title" itemprop="name headline">MySQL-Base</h1>
         
 
         <div class="post-meta">
@@ -343,9 +341,7 @@
       
 
       
-        
-          
-            <h2 id="逻辑架构"><a href="#逻辑架构" class="headerlink" title="逻辑架构"></a>逻辑架构</h2><ol>
+        <h2 id="逻辑架构"><a href="#逻辑架构" class="headerlink" title="逻辑架构"></a>逻辑架构</h2><ol>
 <li>最上层 连接/线程处理(包括连接处理、授权认证、安全等)</li>
 <li>第二层 查询解析、分析、优化、缓存、所有内置函数(日期、时间、数学和加密函数等)、跨存储引擎的功能(存储过程、触发器、视图等)</li>
 <li>第三层 存储引擎，负责MySQL中数据的存储和提取，不同引擎有不同优缺点，服务器通过API与存储引擎通信，接口屏蔽了不同引擎之间的差异，使得差异对上层的查询过程透明</li>
@@ -395,438 +391,72 @@
 <h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><p>SQL标准中规定了四种隔离级别，每种级别都规定了一个事务中所做的修改，哪些在事务内和事务间是可见的，哪些是不可见的。较低级别隔离通常并发更好，系统开销也更低</p>
 <h5 id="READ-UNCOMMITTED-未提交读"><a href="#READ-UNCOMMITTED-未提交读" class="headerlink" title="READ UNCOMMITTED 未提交读"></a>READ UNCOMMITTED 未提交读</h5><p>事务中的修改，即使没有提交，其它事务也是可见的，事务可以读取未提交的数据，称为脏读</p>
 <h5 id="READ-COMMITED-提交读"><a href="#READ-COMMITED-提交读" class="headerlink" title="READ COMMITED 提交读"></a>READ COMMITED 提交读</h5><h5 id="REPEATABLE-READ-可重复读"><a href="#REPEATABLE-READ-可重复读" class="headerlink" title="REPEATABLE READ 可重复读"></a>REPEATABLE READ 可重复读</h5><h5 id="SERIALIZABLE-可串行化"><a href="#SERIALIZABLE-可串行化" class="headerlink" title="SERIALIZABLE 可串行化"></a>SERIALIZABLE 可串行化</h5>
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/18/query/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/18/query/" itemprop="url">MySQL-查询优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T16:35:50+08:00">
-                2017-07-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/18/query/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/18/query/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h2><ol>
-<li>查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快</li>
-<li>查询的生命周期： 客户端发起-&gt;服务器-&gt;解析后生成执行计划-&gt;执行-&gt;返回客户端</li>
-</ol>
-<h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3><ol>
-<li>查询性能低下的最基本原因是访问的数据太多，某些查询可能不可避免地需要筛选大量数据；</li>
-<li>大部分性能低下的查询都可以通过减少访问数据量的方式优化<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- 确认应用程序是否在检索大量超过需要的数据；</div><div class="line">- 确认MySQL服务器层是否在分析大量超过需要的数据行</div></pre></td></tr></table></figure>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/14/closure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/14/closure/" itemprop="url">closure & decorator</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-14T13:14:50+08:00">
-                2017-07-14
-              </time>
+              <a href="/2017/07/18/query/" rel="next" title="MySQL-查询优化">
+                <i class="fa fa-chevron-left"></i> MySQL-查询优化
+              </a>
             
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/14/closure/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/14/closure/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><h3 id="Python变量作用域规则"><a href="#Python变量作用域规则" class="headerlink" title="Python变量作用域规则"></a>Python变量作用域规则</h3><ol>
-<li>Python 不要求声明变量，但假定在函数定义体中赋值的变量是局部变量；</li>
-</ol>
-<h3 id="Base"><a href="#Base" class="headerlink" title="Base"></a>Base</h3><ol>
-<li>闭包指延伸了作用域的函数，包含函数定义体中引用、但不在定义体中定义的非全局变量；</li>
-<li><p>函数是否为匿名函数不重要，关键是它能否访问定义体之外定义的非全局变量；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def make_average():</div><div class="line">    series = []</div><div class="line"></div><div class="line">    def averager(new_value):</div><div class="line">        # series 自由变量(未在本地作用域绑定的变量)</div><div class="line">        series.append(new_value)</div><div class="line">        return sum(series)/len(series)</div><div class="line">    return averager</div></pre></td></tr></table></figure>
-</li>
-<li><p>闭包是一种函数，会保留定义函数时存在的自由变量的绑定，当调用函数时，虽然定义作用域不可用了，仍可使用那些绑定的值</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/14/closure/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
+          <span class="post-nav-divider"></span>
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/07/go/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/07/go/" itemprop="url">go</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T15:31:23+08:00">
-                2017-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/07/go/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/07/go/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
-<li>声明<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> 变量名字 类型 = 表达式</div><div class="line"><span class="number">1.</span> 表达式被省略，零值初始化</div></pre></td></tr></table></figure>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/07/go/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
+        </div>
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -834,6 +464,17 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -853,8 +494,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -907,6 +557,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑架构"><span class="nav-number">1.</span> <span class="nav-text">逻辑架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#连接管理"><span class="nav-number">1.1.</span> <span class="nav-text">连接管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化与执行"><span class="nav-number">1.2.</span> <span class="nav-text">优化与执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发控制"><span class="nav-number">1.3.</span> <span class="nav-text">并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#读写锁"><span class="nav-number">1.3.1.</span> <span class="nav-text">读写锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁粒度"><span class="nav-number">1.3.2.</span> <span class="nav-text">锁粒度</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#表锁"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">表锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#行级锁"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">行级锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">1.4.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ACID"><span class="nav-number">1.4.1.</span> <span class="nav-text">ACID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隔离级别"><span class="nav-number">1.4.2.</span> <span class="nav-text">隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#READ-UNCOMMITTED-未提交读"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">READ UNCOMMITTED 未提交读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#READ-COMMITED-提交读"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">READ COMMITED 提交读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#REPEATABLE-READ-可重复读"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">REPEATABLE READ 可重复读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SERIALIZABLE-可串行化"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">SERIALIZABLE 可串行化</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1027,10 +693,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
 
-  
+
 
   
 
@@ -1048,6 +714,18 @@
       <script id="dsq-count-scr" src="https://lihz1992-github-io.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://lihz1992.github.io/2017/07/19/mysql/';
+          this.page.identifier = '2017/07/19/mysql/';
+          this.page.title = 'MySQL-Base';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://lihz1992-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
