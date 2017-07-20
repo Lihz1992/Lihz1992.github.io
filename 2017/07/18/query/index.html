@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端  base 查询性能低下的最基本原因是访问的数据太多，某些查询可能不可避免地需要筛选大量数据； 大部分性能低下的查询都可以通过减少访问数据量的方式优化12- 确认应用">
+<meta name="description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
 <meta name="keywords" content="MySQL,查询优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL-查询优化">
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/18/query/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端  base 查询性能低下的最基本原因是访问的数据太多，某些查询可能不可避免地需要筛选大量数据； 大部分性能低下的查询都可以通过减少访问数据量的方式优化12- 确认应用">
-<meta property="og:updated_time" content="2017-07-19T01:05:16.000Z">
+<meta property="og:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
+<meta property="og:updated_time" content="2017-07-20T03:13:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL-查询优化">
-<meta name="twitter:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端  base 查询性能低下的最基本原因是访问的数据太多，某些查询可能不可避免地需要筛选大量数据； 大部分性能低下的查询都可以通过减少访问数据量的方式优化12- 确认应用">
+<meta name="twitter:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
 
 
 
@@ -343,9 +343,8 @@
       
         <h2 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h2><ol>
 <li>查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快</li>
-<li>查询的生命周期： 客户端发起-&gt;服务器-&gt;解析后生成执行计划-&gt;执行-&gt;返回客户端</li>
-</ol>
-<h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3><ol>
+<li>查询的生命周期： 客户端发起-&gt;服务器-&gt;解析后生成执行计划-&gt;执行-&gt;返回客户端<a id="more"></a>
+<h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3></li>
 <li>查询性能低下的最基本原因是访问的数据太多，某些查询可能不可避免地需要筛选大量数据；</li>
 <li>大部分性能低下的查询都可以通过减少访问数据量的方式优化<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- 确认应用程序是否在检索大量超过需要的数据；</div><div class="line">- 确认MySQL服务器层是否在分析大量超过需要的数据行</div></pre></td></tr></table></figure>
 </li>
