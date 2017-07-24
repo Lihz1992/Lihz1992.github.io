@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/19/mysql/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="逻辑架构 最上层 连接/线程处理(包括连接处理、授权认证、安全等) 第二层 查询解析、分析、优化、缓存、所有内置函数(日期、时间、数学和加密函数等)、跨存储引擎的功能(存储过程、触发器、视图等) 第三层 存储引擎，负责MySQL中数据的存储和提取，不同引擎有不同优缺点，服务器通过API与存储引擎通信，接口屏蔽了不同引擎之间的差异，使得差异对上层的查询过程透明">
-<meta property="og:updated_time" content="2017-07-24T03:25:00.000Z">
+<meta property="og:updated_time" content="2017-07-24T03:27:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL-Base">
 <meta name="twitter:description" content="逻辑架构 最上层 连接/线程处理(包括连接处理、授权认证、安全等) 第二层 查询解析、分析、优化、缓存、所有内置函数(日期、时间、数学和加密函数等)、跨存储引擎的功能(存储过程、触发器、视图等) 第三层 存储引擎，负责MySQL中数据的存储和提取，不同引擎有不同优缺点，服务器通过API与存储引擎通信，接口屏蔽了不同引擎之间的差异，使得差异对上层的查询过程透明">
@@ -345,7 +345,9 @@
 <li>最上层 连接/线程处理(包括连接处理、授权认证、安全等)</li>
 <li>第二层 查询解析、分析、优化、缓存、所有内置函数(日期、时间、数学和加密函数等)、跨存储引擎的功能(存储过程、触发器、视图等)</li>
 <li>第三层 存储引擎，负责MySQL中数据的存储和提取，不同引擎有不同优缺点，服务器通过API与存储引擎通信，接口屏蔽了不同引擎之间的差异，使得差异对上层的查询过程透明<a id="more"></a>
-<h3 id="连接管理"><a href="#连接管理" class="headerlink" title="连接管理"></a>连接管理</h3></li>
+</li>
+</ol>
+<h3 id="连接管理"><a href="#连接管理" class="headerlink" title="连接管理"></a>连接管理</h3><ol>
 <li>每个客户端连接会在服务器进程中拥有一个线程，该连接的查询只会在这个单独的线程中执行，该线程只能轮流在某个CPU核心或者CPU中运行，服务器会负责缓存线程，不需要为每个新建的连接创建或销毁线程</li>
 <li>认证基于用户名、原始主机信息和密码</li>
 </ol>
@@ -389,11 +391,17 @@
 </ol>
 <h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><p>SQL标准中规定了四种隔离级别，每种级别都规定了一个事务中所做的修改，哪些在事务内和事务间是可见的，哪些是不可见的。较低级别隔离通常并发更好，系统开销也更低</p>
 <h5 id="READ-UNCOMMITTED-未提交读"><a href="#READ-UNCOMMITTED-未提交读" class="headerlink" title="READ UNCOMMITTED 未提交读"></a>READ UNCOMMITTED 未提交读</h5><ul>
-<li>事务中的修改，即使没有提交，其它事务也是可见的，事务可以读取未提交的数据，称为脏读<h5 id="READ-COMMITED-提交读"><a href="#READ-COMMITED-提交读" class="headerlink" title="READ COMMITED 提交读"></a>READ COMMITED 提交读</h5></li>
-<li>大多数数据库系统的默认隔离级别是READ COMMITED(MySQL不是)。事务开始时，只能”看见”已经提交的事务所做的修改。一个事务从开始到提交前，所做任何修改对其它事务不可见。<h5 id="REPEATABLE-READ-可重复读"><a href="#REPEATABLE-READ-可重复读" class="headerlink" title="REPEATABLE READ 可重复读"></a>REPEATABLE READ 可重复读</h5></li>
+<li>事务中的修改，即使没有提交，其它事务也是可见的，事务可以读取未提交的数据，称为脏读</li>
+</ul>
+<h5 id="READ-COMMITED-提交读"><a href="#READ-COMMITED-提交读" class="headerlink" title="READ COMMITED 提交读"></a>READ COMMITED 提交读</h5><ul>
+<li>大多数数据库系统的默认隔离级别是READ COMMITED(MySQL不是)。事务开始时，只能”看见”已经提交的事务所做的修改。一个事务从开始到提交前，所做任何修改对其它事务不可见。</li>
+</ul>
+<h5 id="REPEATABLE-READ-可重复读"><a href="#REPEATABLE-READ-可重复读" class="headerlink" title="REPEATABLE READ 可重复读"></a>REPEATABLE READ 可重复读</h5><ul>
 <li>REPEATABLE READ解决脏读问题，该级别保证了在同一个事务中多次读取同样的记录的结果是一致的。</li>
 <li>对于幻读问题(Phantom Read，当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新的记录，当之前的事务再次读取某个范围内的记录时，会产生幻行(Phantom Row))，该级别隔离无法解决。</li>
-<li>InnoDB、XtraDB存储引擎通过多版本并发控制(MVCC)解决了幻读问题<h5 id="SERIALIZABLE-可串行化"><a href="#SERIALIZABLE-可串行化" class="headerlink" title="SERIALIZABLE 可串行化"></a>SERIALIZABLE 可串行化</h5></li>
+<li>InnoDB、XtraDB存储引擎通过多版本并发控制(MVCC)解决了幻读问题</li>
+</ul>
+<h5 id="SERIALIZABLE-可串行化"><a href="#SERIALIZABLE-可串行化" class="headerlink" title="SERIALIZABLE 可串行化"></a>SERIALIZABLE 可串行化</h5><ul>
 <li>最高级别隔离，通过强制事务串行执行，避免幻读问题</li>
 <li>SERIALIZABLE在读取每行数据上加锁，可能导致大量的超时和锁争用的问题</li>
 <li>仅在非常需要确保数据的一致性而且可以接受没有并发的情况下，采用该级别</li>
