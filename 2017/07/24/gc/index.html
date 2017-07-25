@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/24/gc/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
-<meta property="og:updated_time" content="2017-07-25T05:37:48.000Z">
+<meta property="og:updated_time" content="2017-07-25T05:58:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="object reference &amp; gc">
 <meta name="twitter:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
@@ -396,7 +396,7 @@
 </ol>
 <h2 id="del和垃圾回收"><a href="#del和垃圾回收" class="headerlink" title="del和垃圾回收"></a>del和垃圾回收</h2><p>对象不会自行销毁，然而，无法得到对象时，可能会被当做垃圾回收</p>
 <ol>
-<li>del 语句删除名称，而不是对象。</li>
+<li>del 语句删除名称，而不是对象</li>
 <li>del命令可能会导致对象被当做垃圾回收，但是仅当删除的变量保存的是对象的最后一个引用，或者无法得到对象时。</li>
 <li>重新绑定也可能会导致对象的引用数量归零，导致对象被销毁</li>
 <li><code>__del__</code>特殊方法，在即将销毁实例时，Python解释器会调用<code>__del__</code>方法，给实例最后的机会，释放外部资源</li>
@@ -416,7 +416,10 @@
 <h3 id="WeakValueDictionary"><a href="#WeakValueDictionary" class="headerlink" title="WeakValueDictionary"></a>WeakValueDictionary</h3><ol>
 <li>WeakValueDictionary类实现的是一种可变映射，里面的值是对象的弱引用</li>
 <li>被引用的对象在程序中的其他地方被当做垃圾回收后，对应的键会自动从WeakValueDictionary中删除</li>
-<li>WeakValueDictionary常用于缓存<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<li><p>WeakValueDictionary常用于缓存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">class Cheese(object):</div><div class="line">    def __init__(self, kind):</div><div class="line">        self.kind = kind</div><div class="line"></div><div class="line">    def __repr__(self):</div><div class="line">        return &apos;Cheese(%r)&apos; % self.kind</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    import weakref</div><div class="line">    stock = weakref.WeakValueDictionary()</div><div class="line">    catalog = [Cheese(_str) for _str in [&apos;Red Leicester&apos;, &apos;Tilsit&apos;, &apos;Brie&apos;, &apos;Parmesan&apos;]]</div><div class="line">    for cheese in catlog:</div><div class="line">        stock[cheese.kind] = cheese</div><div class="line">    sorted(stock.keys())</div><div class="line">    # &gt;&gt;&gt; [&apos;Brie&apos;, &apos;Parmesan&apos;, &apos;Red Leicester&apos;, &apos;Tilsit&apos;]</div><div class="line"></div><div class="line">    del catalog</div><div class="line">    sorted(stock.keys())</div><div class="line">    # &gt;&gt;&gt; [&apos;Parmesan&apos;]</div><div class="line"></div><div class="line">    del cheese</div><div class="line">    sorted(stock.keys())</div><div class="line">    # &gt;&gt;&gt; []</div></pre></td></tr></table></figure>
+</li>
+<li><p>临时变量引用了对象，可能会导致该变量的存在时间比预期长</p>
 </li>
 </ol>
 
