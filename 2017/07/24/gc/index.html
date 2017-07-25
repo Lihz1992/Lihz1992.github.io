@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/24/gc/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
-<meta property="og:updated_time" content="2017-07-25T02:00:41.000Z">
+<meta property="og:updated_time" content="2017-07-25T03:52:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="object reference &amp; gc">
 <meta name="twitter:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
@@ -358,7 +358,62 @@
 <li>元组的不可变性其实是指tuple数据结构的物理内容<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; t1 = (1, 2, [30, 40])</div><div class="line">&gt;&gt;&gt; t2 = (1, 2, [30, 40])</div><div class="line">&gt;&gt;&gt; t1 == t2</div><div class="line">True</div><div class="line">&gt;&gt;&gt; id(t1[-1])</div><div class="line">4302515784</div><div class="line">&gt;&gt;&gt; t1[-1].append(99)</div><div class="line">&gt;&gt;&gt; id(t1[-1])</div><div class="line">4302515784</div><div class="line">&gt;&gt;&gt; t1 == t2</div><div class="line">False</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><p>复制列表</p>
+<h2 id="默认做浅拷贝"><a href="#默认做浅拷贝" class="headerlink" title="默认做浅拷贝"></a>默认做浅拷贝</h2><ol>
+<li>复制列表：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; l1 = [3, [55, 44], (7, 8, 9)]</div><div class="line">&gt;&gt;&gt; l2 = list(l1)</div><div class="line">&gt;&gt;&gt; l2</div><div class="line">[3, [55, 44], (7, 8, 9)]</div><div class="line">&gt;&gt;&gt; l2 == l1</div><div class="line">True</div><div class="line">&gt;&gt;&gt; l2 is l1</div><div class="line">False</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>更简洁的创建副本方法 <code>l2 = l1[:]</code><br>以上两种方法做的是浅拷贝(复制了最外层容器，副本中的元素是源容器中元素的引用)</p>
+<h4 id="深拷贝、浅拷贝"><a href="#深拷贝、浅拷贝" class="headerlink" title="深拷贝、浅拷贝"></a>深拷贝、浅拷贝</h4><ol>
+<li><code>copy</code>模块提供<code>deepcopy</code>、<code>copy</code>函数能为任意对象做深拷贝和浅拷贝</li>
+<li>一般而言，在对象有循环引用的情况下，深拷贝会进入无限循环，<code>deepcopy</code>函数会记住已经复制的对象，因此能优雅的处理循环引用</li>
+<li>深复制有时太深，如对象可能会引用不该复制的外部资源或单例值，可以实现特殊方法<code>__copy__()</code>、<code>__deepcopy__()</code>控制copy和deepcopy的行为</li>
+</ol>
+<h2 id="函数参数作为引用时"><a href="#函数参数作为引用时" class="headerlink" title="函数参数作为引用时"></a>函数参数作为引用时</h2><ol>
+<li>Python唯一支持的参数传递模式是共享传参(call by sharing)。多数面向对象语言都采用该模式，包括<code>ruby</code>、 <code>Smalltalk</code>、 <code>Java</code></li>
+<li>共享传参指函数的各个形式参数获得实参中各个引用的副本，亦即函数内部的形参是实参的别名</li>
+<li>共享传参的结果是，函数可能会修改作为参数传入的可变对象，但无法修改那些对象的标识</li>
+</ol>
+<h4 id="不要使用可变类型作为参数的默认值"><a href="#不要使用可变类型作为参数的默认值" class="headerlink" title="不要使用可变类型作为参数的默认值"></a>不要使用可变类型作为参数的默认值</h4><ol>
+<li>可选参数可以有默认值，这保证API在进化的同时能向后兼容</li>
+<li>应当避免使用可变对象作为参数的默认值<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def test(x=[], y=None):</div><div class="line">    x.append(y) if y else x</div><div class="line">    print(x)</div><div class="line"></div><div class="line">&gt;&gt;&gt; test([1, 2])</div><div class="line">[1, 2]</div><div class="line">&gt;&gt;&gt; test(y=1)</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt; test(y=2)</div><div class="line">[1, 2]</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>没传入x参数，使用默认绑定的列表对象，一开始是空列表，append()操作修改的是默认列表，它是函数对象的一个属性，在函数定义时产生(通常加载模块时)。可用<code>dir()</code>函数查看函数<code>__defaults__</code>内容</p>
+<ol>
+<li>因此通常应该使用None作为接收可变参数的默认值</li>
+</ol>
+<h4 id="防御可变参数"><a href="#防御可变参数" class="headerlink" title="防御可变参数"></a>防御可变参数</h4><ol>
+<li>接口设计的最佳实践: 最少惊讶原则<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class TwilightBus:</div><div class="line">    def __init__(self, passengers=None):</div><div class="line">        if passengers is None:</div><div class="line">            self.passengers = []</div><div class="line">        else:</div><div class="line">            self.passengers = passengers</div><div class="line"></div><div class="line">    def pick(self, name):</div><div class="line">        self.passengers.append(name)</div><div class="line"></div><div class="line">    def drop(self, name):</div><div class="line">        self.passengers.remove(name)</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>以上<code>pick</code>，<code>drop</code>方法会修改传递给构造方法的那个列表</p>
+<ol>
+<li><p>针对1的修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def __init__(self, passengers=None):</div><div class="line">    if passengers is None:</div><div class="line">        self.passengers = []</div><div class="line">    else:</div><div class="line">        self.passengers = list(passengers)</div></pre></td></tr></table></figure>
+</li>
+<li><p>在类中直接把参数赋值给实例变量，会为参数对象创建别名。除非确实需要修改通过参数传入的对象，其它场景下应该创建参数副本</p>
+</li>
+</ol>
+<h2 id="del和垃圾回收"><a href="#del和垃圾回收" class="headerlink" title="del和垃圾回收"></a>del和垃圾回收</h2><p>对象不会自行销毁，然而，无法得到对象时，可能会被当做垃圾回收</p>
+<ol>
+<li>del 语句删除名称，而不是对象。</li>
+<li>del命令可能会导致对象被当做垃圾回收，但是仅当删除的变量保存的是对象的最后一个引用，或者无法得到对象时。</li>
+<li>重新绑定也可能会导致对象的引用数量归零，导致对象被销毁</li>
+<li><code>__del__</code>特殊方法，在即将销毁实例时，Python解释器会调用<code>__del__</code>方法，给实例最后的机会，释放外部资源</li>
+<li>CPython中，垃圾回收主要算法是引用计数，每个对象都会统计有多少引用指向自己，当引用计数归零时，对象立即被销毁</li>
+<li>CPython2.0增加了分代垃圾回收算法，用于检测引用循环中涉及的对象组:如果一组对象之间全是相互引用，即使再出色的引用方式也会导致组中的对象不可获取</li>
+<li><p>Python的其他实现有更复杂的垃圾回收程序，且不依赖引用计数，意味着，对象的引用数量为零时可能不会立即调用<code>__del__</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import weakref</div><div class="line">&gt;&gt;&gt; s1 = &#123;1, 2, 3&#125;</div><div class="line">&gt;&gt;&gt; s2 = s1</div><div class="line">&gt;&gt;&gt; def bye():</div><div class="line">        print(&apos;Gone with the wind...&apos;)</div><div class="line">&gt;&gt;&gt;ender = weakref.finalize(s1, bye)</div><div class="line">&gt;&gt;&gt; ender.alive</div><div class="line">True</div><div class="line">&gt;&gt;&gt; del s1</div><div class="line">&gt;&gt;&gt; ender.alive</div><div class="line">True</div><div class="line">&gt;&gt;&gt; s2= &apos;spam&apos;</div><div class="line">Gone with the wind</div><div class="line">&gt;&gt;&gt; ender.alive</div><div class="line">False</div></pre></td></tr></table></figure>
+</li>
+<li><p>7示例中将s1引用传递给<code>finalize</code>函数，finalize持有<code>{1, 2, 3}</code>的弱引用</p>
+</li>
+</ol>
+<h2 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h2><ol>
+<li>在某些情景下(如缓存场景)，需要引用对象，而不让对象存在时间超过所需要的时间</li>
+<li>弱引用不会增加对象的引用数量，引用的目标对象称为所指对象(referent)，弱引用不会妨碍所指对象被当做垃圾回收</li>
+<li>弱引用在缓存应用中很有用，使得不用因被缓存引用着而始终保存缓存对象<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import weakref</div><div class="line">&gt;&gt;&gt;  a_set = &#123;0, 1&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
     </div>
@@ -540,7 +595,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#标识、类型和值"><span class="nav-number">1.</span> <span class="nav-text">标识、类型和值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#和is"><span class="nav-number">1.0.1.</span> <span class="nav-text">==和is</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#元组的相对不可变性"><span class="nav-number">1.0.2.</span> <span class="nav-text">元组的相对不可变性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浅拷贝"><span class="nav-number">1.0.3.</span> <span class="nav-text">浅拷贝</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#标识、类型和值"><span class="nav-number">1.</span> <span class="nav-text">标识、类型和值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#和is"><span class="nav-number">1.0.1.</span> <span class="nav-text">==和is</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#元组的相对不可变性"><span class="nav-number">1.0.2.</span> <span class="nav-text">元组的相对不可变性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认做浅拷贝"><span class="nav-number">2.</span> <span class="nav-text">默认做浅拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#深拷贝、浅拷贝"><span class="nav-number">2.0.1.</span> <span class="nav-text">深拷贝、浅拷贝</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数参数作为引用时"><span class="nav-number">3.</span> <span class="nav-text">函数参数作为引用时</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不要使用可变类型作为参数的默认值"><span class="nav-number">3.0.1.</span> <span class="nav-text">不要使用可变类型作为参数的默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#防御可变参数"><span class="nav-number">3.0.2.</span> <span class="nav-text">防御可变参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#del和垃圾回收"><span class="nav-number">4.</span> <span class="nav-text">del和垃圾回收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#弱引用"><span class="nav-number">5.</span> <span class="nav-text">弱引用</span></a></li></ol></div>
             
 
           </div>
