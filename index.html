@@ -344,26 +344,17 @@
 
       
         
-          
-            <h2 id="标识、类型和值"><a href="#标识、类型和值" class="headerlink" title="标识、类型和值"></a>标识、类型和值</h2><p>每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。</p>
+          <h2 id="标识、类型和值"><a href="#标识、类型和值" class="headerlink" title="标识、类型和值"></a>标识、类型和值</h2><p>每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。</p>
 <ul>
 <li>CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值</li>
-<li>ID一定是唯一的数值标注，且在对象的声明周期中绝不会变</li>
-</ul>
-<h4 id="和is"><a href="#和is" class="headerlink" title="==和is"></a>==和is</h4><ol>
-<li>==运算符比较两个对象的值，is比较对象的标识</li>
-<li>is运算符比==速度更快，因为前者不能重载，所以Python不用寻找并调用特殊方法，而是直接比较二者ID</li>
-<li><code>a == b</code>是语法糖，等同于<code>a.__eq__(b)</code>，考虑到对象属性的值，多数内置类型使用更有意义的方式覆盖了<code>__eq__</code>方法</li>
-</ol>
-<h4 id="元组的相对不可变性"><a href="#元组的相对不可变性" class="headerlink" title="元组的相对不可变性"></a>元组的相对不可变性</h4><ol>
-<li>元组与多数Python集合(列表、字典、集等等)一样，保存的是对象的引用。</li>
-<li>若引用的元素是可变的，即便元组本身不可变，元素依然可变</li>
-<li>元组的不可变性其实是指tuple数据结构的物理内容<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; t1 = (1, 2, [30, 40])</div><div class="line">&gt;&gt;&gt; t2 = (1, 2, [30, 40])</div><div class="line">&gt;&gt;&gt; t1 == t2</div><div class="line">True</div><div class="line">&gt;&gt;&gt; id(t1[-1])</div><div class="line">4302515784</div><div class="line">&gt;&gt;&gt; t1[-1].append(99)</div><div class="line">&gt;&gt;&gt; id(t1[-1])</div><div class="line">4302515784</div><div class="line">&gt;&gt;&gt; t1 == t2</div><div class="line">False</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><p>复制列表</p>
-
-          
+<li>ID一定是唯一的数值标注，且在对象的声明周期中绝不会变
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/24/gc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

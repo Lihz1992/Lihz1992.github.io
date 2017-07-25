@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变  ==和is ==运算符比较两个对象的值，is比较对象的标识 is运算符比==速度更快，因为前">
+<meta name="description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
 <meta name="keywords" content="Python,object reference,gc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="object reference &amp; gc">
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/24/gc/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变  ==和is ==运算符比较两个对象的值，is比较对象的标识 is运算符比==速度更快，因为前">
-<meta property="og:updated_time" content="2017-07-24T08:36:18.000Z">
+<meta property="og:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
+<meta property="og:updated_time" content="2017-07-25T02:00:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="object reference &amp; gc">
-<meta name="twitter:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变  ==和is ==运算符比较两个对象的值，is比较对象的标识 is运算符比==速度更快，因为前">
+<meta name="twitter:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
 
 
 
@@ -344,7 +344,8 @@
         <h2 id="标识、类型和值"><a href="#标识、类型和值" class="headerlink" title="标识、类型和值"></a>标识、类型和值</h2><p>每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。</p>
 <ul>
 <li>CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值</li>
-<li>ID一定是唯一的数值标注，且在对象的声明周期中绝不会变</li>
+<li>ID一定是唯一的数值标注，且在对象的声明周期中绝不会变<a id="more"></a>
+</li>
 </ul>
 <h4 id="和is"><a href="#和is" class="headerlink" title="==和is"></a>==和is</h4><ol>
 <li>==运算符比较两个对象的值，is比较对象的标识</li>
