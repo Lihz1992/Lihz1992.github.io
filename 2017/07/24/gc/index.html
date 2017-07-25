@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/24/gc/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
-<meta property="og:updated_time" content="2017-07-25T06:27:04.000Z">
+<meta property="og:updated_time" content="2017-07-25T06:35:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="object reference &amp; gc">
 <meta name="twitter:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
@@ -394,7 +394,7 @@
 <li><p>在类中直接把参数赋值给实例变量，会为参数对象创建别名。除非确实需要修改通过参数传入的对象，其它场景下应该创建参数副本</p>
 </li>
 </ol>
-<h2 id="del和垃圾回收"><a href="#del和垃圾回收" class="headerlink" title="del和垃圾回收"></a>del和垃圾回收</h2><p>对象不会自行销毁，然而，无法得到对象时，可能会被当做垃圾回收</p>
+<h2 id="del和垃圾回收"><a href="#del和垃圾回收" class="headerlink" title="del和垃圾回收"></a>del和垃圾回收</h2><p>对象绝不会自行销毁，然而，无法得到对象时，可能会被当做垃圾回收</p>
 <ol>
 <li>del 语句删除名称，而不是对象</li>
 <li>del命令可能会导致对象被当做垃圾回收，但是仅当删除的变量保存的是对象的最后一个引用，或者无法得到对象时。</li>
