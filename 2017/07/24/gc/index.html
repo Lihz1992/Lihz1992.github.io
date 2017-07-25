@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/24/gc/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
-<meta property="og:updated_time" content="2017-07-25T06:35:15.000Z">
+<meta property="og:updated_time" content="2017-07-25T09:04:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="object reference &amp; gc">
 <meta name="twitter:description" content="标识、类型和值每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。  CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值 ID一定是唯一的数值标注，且在对象的声明周期中绝不会变">
@@ -375,19 +375,18 @@
 </ol>
 <h3 id="不要使用可变类型作为参数的默认值"><a href="#不要使用可变类型作为参数的默认值" class="headerlink" title="不要使用可变类型作为参数的默认值"></a>不要使用可变类型作为参数的默认值</h3><ol>
 <li>可选参数可以有默认值，这保证API在进化的同时能向后兼容</li>
-<li>应当避免使用可变对象作为参数的默认值<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def test(x=[], y=None):</div><div class="line">    x.append(y) if y else x</div><div class="line">    print(x)</div><div class="line"></div><div class="line">&gt;&gt;&gt; test([1, 2])</div><div class="line">[1, 2]</div><div class="line">&gt;&gt;&gt; test(y=1)</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt; test(y=2)</div><div class="line">[1, 2]</div></pre></td></tr></table></figure>
+<li><p>应当避免使用可变对象作为参数的默认值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def test(x=[], y=None):</div><div class="line">    x.append(y) if y else x</div><div class="line">    print(x)</div><div class="line"></div><div class="line">&gt;&gt;&gt; test([1, 2])</div><div class="line">[1, 2]</div><div class="line">&gt;&gt;&gt; test(y=1)</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt; test(y=2)</div><div class="line">[1, 2]</div></pre></td></tr></table></figure>
 </li>
-</ol>
-<p>没传入x参数，使用默认绑定的列表对象，一开始是空列表，append()操作修改的是默认列表，它是函数对象的一个属性，在函数定义时产生(通常加载模块时)。可用<code>dir()</code>函数查看函数<code>__defaults__</code>内容</p>
-<ol>
-<li>因此通常应该使用None作为接收可变参数的默认值</li>
+<li><p>如示例3，没传入x参数，使用默认绑定的列表对象，一开始是空列表，append()操作修改的是默认列表，它是函数对象的一个属性，在函数定义时产生(通常加载模块时)。可用<code>dir()</code>函数查看函数<code>__defaults__</code>内容</p>
+</li>
+<li><p>因此通常应该使用None作为接收可变参数的默认值</p>
+</li>
 </ol>
 <h3 id="防御可变参数"><a href="#防御可变参数" class="headerlink" title="防御可变参数"></a>防御可变参数</h3><ol>
-<li>接口设计的最佳实践: 最少惊讶原则<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class TwilightBus:</div><div class="line">    def __init__(self, passengers=None):</div><div class="line">        if passengers is None:</div><div class="line">            self.passengers = []</div><div class="line">        else:</div><div class="line">            self.passengers = passengers</div><div class="line"></div><div class="line">    def pick(self, name):</div><div class="line">        self.passengers.append(name)</div><div class="line"></div><div class="line">    def drop(self, name):</div><div class="line">        self.passengers.remove(name)</div></pre></td></tr></table></figure>
+<li><p>接口设计的最佳实践: 最少惊讶原则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class TwilightBus:</div><div class="line">    def __init__(self, passengers=None):</div><div class="line">        if passengers is None:</div><div class="line">            self.passengers = []</div><div class="line">        else:</div><div class="line">            self.passengers = passengers</div><div class="line"></div><div class="line">    def pick(self, name):</div><div class="line">        self.passengers.append(name)</div><div class="line"></div><div class="line">    def drop(self, name):</div><div class="line">        self.passengers.remove(name)</div><div class="line"></div><div class="line">    # 以上`pick`，`drop`方法会修改传递给构造方法的那个列表</div></pre></td></tr></table></figure>
 </li>
-</ol>
-<p>以上<code>pick</code>，<code>drop</code>方法会修改传递给构造方法的那个列表</p>
-<ol>
 <li><p>针对1的修改：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def __init__(self, passengers=None):</div><div class="line">    if passengers is None:</div><div class="line">        self.passengers = []</div><div class="line">    else:</div><div class="line">        self.passengers = list(passengers)</div></pre></td></tr></table></figure>
 </li>
