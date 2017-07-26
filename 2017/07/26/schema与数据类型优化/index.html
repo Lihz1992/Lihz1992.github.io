@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/26/schema与数据类型优化/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="摘要 良好的逻辑设计和物理设计是高性能的基石，应该根据系统将要执行的查询语句来设计schema 反范式的设计可以加快某些类型的查询，但同时可能使另一些类型的查询变慢(如：添加计数表和汇总表是一种很好的优化查询方式，但这些表的维护成本会较高) MySQL独有的特性和实现细节对性能的影响也很大">
-<meta property="og:updated_time" content="2017-07-26T02:09:08.000Z">
+<meta property="og:updated_time" content="2017-07-26T02:14:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="schema与数据类型优化">
 <meta name="twitter:description" content="摘要 良好的逻辑设计和物理设计是高性能的基石，应该根据系统将要执行的查询语句来设计schema 反范式的设计可以加快某些类型的查询，但同时可能使另一些类型的查询变慢(如：添加计数表和汇总表是一种很好的优化查询方式，但这些表的维护成本会较高) MySQL独有的特性和实现细节对性能的影响也很大">
@@ -372,7 +372,7 @@
 </ol>
 <h4 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h4><ol>
 <li>数字有两种类型： 整数(whole number)和实数(real number)</li>
-<li>存储整数可用到类型: TINYINT(8)、SMALLINT(16)、MEDIUMINT(24)、INT(32)、BIGINT(64), 存储范围从$$-2^{(N-1)}$$到$$2^{(N-1)}-1$$</li>
+<li>存储整数可用到类型: TINYINT(8)、SMALLINT(16)、MEDIUMINT(24)、INT(32)、BIGINT(64), 存储范围从\(-2^{(N-1)}\)到\(2^{(N-1)}-1\)</li>
 </ol>
 
       
