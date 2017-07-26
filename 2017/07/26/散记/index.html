@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="MySQL,查询优化," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -93,17 +93,16 @@
 
 
 
-<meta name="description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
-<meta name="keywords" content="MySQL,查询优化">
+<meta name="description" content="我知这世界，本如露水般短暂。 然而， 然而。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL-查询优化">
-<meta property="og:url" content="http://lihz1992.github.io/2017/07/18/query/index.html">
+<meta property="og:title" content="散记">
+<meta property="og:url" content="http://lihz1992.github.io/2017/07/26/散记/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
-<meta property="og:updated_time" content="2017-07-26T01:15:24.000Z">
+<meta property="og:description" content="我知这世界，本如露水般短暂。 然而， 然而。">
+<meta property="og:updated_time" content="2017-07-26T05:03:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL-查询优化">
-<meta name="twitter:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
+<meta name="twitter:title" content="散记">
+<meta name="twitter:description" content="我知这世界，本如露水般短暂。 然而， 然而。">
 
 
 
@@ -131,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://lihz1992.github.io/2017/07/18/query/"/>
+  <link rel="canonical" href="http://lihz1992.github.io/2017/07/26/散记/"/>
 
 
 
 
 
-  <title>MySQL-查询优化 | Lihz's workspace</title>
+  <title>散记 | Lihz's workspace</title>
   
 
 
@@ -266,7 +265,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/18/query/">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/26/散记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lihz">
@@ -283,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL-查询优化</h1>
+          <h1 class="post-title" itemprop="name headline">散记</h1>
         
 
         <div class="post-meta">
@@ -295,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T16:35:50+08:00">
-                2017-07-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-26T13:02:58+08:00">
+                2017-07-26
               </time>
             
 
@@ -314,9 +313,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/18/query/#comments" itemprop="discussionUrl">
+                <a href="/2017/07/26/散记/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/18/query/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/07/26/散记/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -341,14 +340,9 @@
       
 
       
-        <h2 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h2><ol>
-<li>查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快</li>
-<li>查询的生命周期： 客户端发起-&gt;服务器-&gt;解析后生成执行计划-&gt;执行-&gt;返回客户端<a id="more"></a>
-<h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3></li>
-<li>查询性能低下的最基本原因是访问的数据太多，某些查询可能不可避免地需要筛选大量数据；</li>
-<li>大部分性能低下的查询都可以通过减少访问数据量的方式优化<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- 确认应用程序是否在检索大量超过需要的数据；</div><div class="line">- 确认MySQL服务器层是否在分析大量超过需要的数据行</div></pre></td></tr></table></figure>
-</li>
-</ol>
+        <p>我知这世界，本如露水般短暂。</p>
+<p>然而，</p>
+<p>然而。</p>
 
       
     </div>
@@ -376,14 +370,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
-          
-            <a href="/tags/查询优化/" rel="tag"># 查询优化</a>
-          
-        </div>
-      
 
       
       
@@ -393,8 +379,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/14/closure/" rel="next" title="closure & decorator">
-                <i class="fa fa-chevron-left"></i> closure & decorator
+              <a href="/2017/07/26/schema与数据类型优化/" rel="next" title="schema与数据类型优化">
+                <i class="fa fa-chevron-left"></i> schema与数据类型优化
               </a>
             
           </div>
@@ -403,8 +389,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/19/mysql/" rel="prev" title="MySQL-Base">
-                MySQL-Base <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/26/leetcode/" rel="prev" title="leetcode题解">
+                leetcode题解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -459,17 +445,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/IMG_0645.JPG"
@@ -522,22 +499,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#慢查询"><span class="nav-number">1.</span> <span class="nav-text">慢查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#base"><span class="nav-number">1.1.</span> <span class="nav-text">base</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -682,9 +643,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://lihz1992.github.io/2017/07/18/query/';
-          this.page.identifier = '2017/07/18/query/';
-          this.page.title = 'MySQL-查询优化';
+          this.page.url = 'http://lihz1992.github.io/2017/07/26/散记/';
+          this.page.identifier = '2017/07/26/散记/';
+          this.page.title = '散记';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://lihz1992-github-io.disqus.com/embed.js';
