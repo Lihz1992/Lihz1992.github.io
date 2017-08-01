@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/26/schema与数据类型优化/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="摘要 良好的逻辑设计和物理设计是高性能的基石，应该根据系统将要执行的查询语句来设计schema 反范式的设计可以加快某些类型的查询，但同时可能使另一些类型的查询变慢(如：添加计数表和汇总表是一种很好的优化查询方式，但这些表的维护成本会较高) MySQL独有的特性和实现细节对性能的影响也很大">
-<meta property="og:updated_time" content="2017-07-27T01:38:46.000Z">
+<meta property="og:updated_time" content="2017-08-01T09:06:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="schema与数据类型优化">
 <meta name="twitter:description" content="摘要 良好的逻辑设计和物理设计是高性能的基石，应该根据系统将要执行的查询语句来设计schema 反范式的设计可以加快某些类型的查询，但同时可能使另一些类型的查询变慢(如：添加计数表和汇总表是一种很好的优化查询方式，但这些表的维护成本会较高) MySQL独有的特性和实现细节对性能的影响也很大">
@@ -383,11 +383,76 @@
 </ol>
 <h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><h5 id="VARCHAR和CHAR"><a href="#VARCHAR和CHAR" class="headerlink" title="VARCHAR和CHAR"></a>VARCHAR和CHAR</h5><p>这些值在内存、磁盘的存储方式由存储引擎决定</p>
 <h6 id="VARCHAR"><a href="#VARCHAR" class="headerlink" title="VARCHAR"></a>VARCHAR</h6><ol>
-<li>VARCHAR用于存储可变长字符串，比定长类型节省空间</li>
+<li>VARCHAR用于存储可变长字符串，仅使用必要的空间，比定长类型节省空间</li>
 <li>VARCHAR需要使用额外的1-2字节记录字符串的长度(列的长度&lt;=255使用1字节，否则2字节)</li>
-<li>VARCHAR节省了存储空间，对性能有所提升，但在update操作时可能使得行变得比原来更长，导致需要额外的工作(如行占用空间增长，且页内没有更多的空间可以存储)<br>4.</li>
+<li>VARCHAR节省了存储空间，对性能有所提升，但在update操作时可能使得行变得比原来更长，导致需要额外的工作(如行占用空间增长，且页内没有更多的空间可以存储)，不同存储引擎对此的处理方式不同，MyISAM会将行拆分成不同的片段存储，InnoDB则需要分裂页来使行可以放进页内</li>
+<li>适合使用VARCHAR的情况：</li>
 </ol>
-
+<ul>
+<li>字符串列的最大长度比平均长度大很多</li>
+<li>列的更新很少，碎片不是问题</li>
+<li>使用了像UTF-8这样复杂的字符集，每个字符都使用不同的字节数进行存储</li>
+</ul>
+<ol>
+<li>InnoDB灵活的把过长的VARCHAR存储为BLOB</li>
+<li>5.0或更高版本MySQL在存储和检索时会保留末尾空格</li>
+<li><code>VARCHAR(5)</code>与<code>VARCHAR(200)</code>，MySQL会分配固定大小的内存块来保存内部值，因而后者会消耗更多的内存,在使用内存临时表或磁盘临时表进行排序或操作时会特别糟糕，最佳的策略是只分配真正需要的空间</li>
+</ol>
+<h6 id="CHAR"><a href="#CHAR" class="headerlink" title="CHAR"></a>CHAR</h6><ol>
+<li>CHAR类型定长，MySQL根据定义的字符串长度分配足够的空间</li>
+<li>存储CHAR值时，MySQL会删除所有的末尾空格</li>
+<li>适合使用CHAR的情况:</li>
+</ol>
+<ul>
+<li>存储很短的字符串</li>
+<li>所有值接近同一长度(如存储密码的md5值)</li>
+<li>对于经常变更的数据，CHAR优于VARCHAR，定长的特点不容易产生碎片</li>
+<li>对于非常短的列，CHAR比VARCHAR在存储空间上更有效率</li>
+</ul>
+<h5 id="BLOB和TEXT"><a href="#BLOB和TEXT" class="headerlink" title="BLOB和TEXT"></a>BLOB和TEXT</h5><p>BLOB和TEXT都是为存储很大的数据而设计的字符串数据类型，分别采用二进制和字符方式存储</p>
+<ol>
+<li>字符类型:TINYTEXT、SMALLTEXT、TEXT、MEDIUMTEXT、LONGTEXT</li>
+<li>二进制类型:TINYBLOB、SMALLBLOB、BLOB、MEDIUMBLOB、LONGBLOB</li>
+<li>MySQL把每个BLOB和TEXT值当做一个独立的对象处理，当BLOB和TEXT值太大时，InnoDB会使用专门的”外部”存储区域进行存储，此时每个值在行内需要1-4个字节存储一个指针，然后在外部区域存储实际的值</li>
+<li>二者仅有的不同是BLOB类型存储的是二进制数据，没有排序规则或字符集</li>
+<li>MySQL对BLOB和TEXT列进行排序与其它类型不同，只对每个列的最前max_sort_length字节而非整个字符串排序，如只需排序前面一小部分字符，可以减少max_sort_length的配置，或者使用<code>ORDER BY SUSTRING(column, length)</code></li>
+<li>MySQL不能将BLOB和TEXT列全部长度的字符串进行索引，也不能使用这些索引消除排序</li>
+</ol>
+<h5 id="使用枚举-ENUM-代替字符串类型"><a href="#使用枚举-ENUM-代替字符串类型" class="headerlink" title="使用枚举(ENUM)代替字符串类型"></a>使用枚举(ENUM)代替字符串类型</h5><ol>
+<li>可以使用ENUM列代替常用的字符串类型。枚举列可以吧一些不重复的字符串存储成一个预定义的集合</li>
+<li>MySQL在存储枚举时根据列表值的数量压缩到1-2个字节中并在内部将每个值在列表的位置保存为整数，并在<code>.frm</code>文件中保存“数字-字符串”，映射关系的“查找表”</li>
+</ol>
+<h4 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h4><p>MySQL能储存的最小时间粒度为秒,但MySQL可以绕开存储限制，使用微秒级的粒度进行临时计算</p>
+<h5 id="DATETIME"><a href="#DATETIME" class="headerlink" title="DATETIME"></a>DATETIME</h5><ol>
+<li>该类型可以保存大范围的值，从1001年到9999年，精度为秒，它把日期和时间封装到格式为YYYYMMDDHHMMSS的整数中，使用8个字节的存储空间</li>
+</ol>
+<h5 id="TIMESTAMP"><a href="#TIMESTAMP" class="headerlink" title="TIMESTAMP"></a>TIMESTAMP</h5><ol>
+<li>保存了从1970年1月1日午夜以来的秒数，与UNIX时间戳相同，只占用四个字节的存储空间</li>
+<li>范围从1970年到2038年，MySQL提供了FROM_UNIXTIME()函数把Unix时间戳转为日期及UNIX_TIMESTAMP()函数把日期转为Unix时间戳</li>
+</ol>
+<p>通常应该使用后TIMESTAMP，空间效率更高。如果需要存储比秒更小粒度的日期和时间值，可以使用自己的存储格式，BIGINT类型存储微秒级别的时间戳，或者使用DOUBLE存储秒之后的小数部分。</p>
+<h4 id="位数据类型"><a href="#位数据类型" class="headerlink" title="位数据类型"></a>位数据类型</h4><p>待施工</p>
+<h4 id="选择标识列"><a href="#选择标识列" class="headerlink" title="选择标识列"></a>选择标识列</h4><ol>
+<li>选择标识列，不仅要考虑存储类型，还需要考虑MySQL对这种类型怎么执行计算和比较</li>
+<li>在可以满足值得范围需求，并且预留未来增长空间的前提下，应该选择最小的数据类型</li>
+<li>整数类型通常是标识列最好的选择</li>
+<li>ENUM或SET类型通常是个糟糕的选择</li>
+<li>字符串类型应尽量避免作为标识列，该类型消耗空间且通常比数字类型慢，对于完全“随机”的字符串也需要多加注意，例如MD5()、SHA1()、UUID()产生的字符串，这些函数生成的新值会任意分布在很大的空间内，这会导致INSERT以及一些SELECT语句变得很慢</li>
+</ol>
+<ul>
+<li>插入值会随机写到索引的不同位置，所以使得INSERT语句更慢。这会导致页分裂、随机磁盘访问，以及聚簇存储引擎产生聚簇索引碎片</li>
+<li>SELECT语句会变得更慢，因为逻辑上相邻的行会分布在磁盘和内存的不同地方</li>
+<li>随机值使得缓存赖以工作的访问局部性原理失效，导致缓存对所有类型的查询语句效果都很差</li>
+</ul>
+<ol>
+<li>如果存储UUID值，则应该移除”-“符号，或者更好的做法是用UNHEX()函数转换UUID值为16字节的数字，并且存储在一个BINARY(16)列中。检索时可以通过HEX()函数来格式化为16进制格式</li>
+<li>UUID()生成的值与加密函数如SHA1()生成的值有不同的特征：UUID值虽然分布也不均匀，但还是有一定的顺序</li>
+</ol>
+<h4 id="特殊类型数据"><a href="#特殊类型数据" class="headerlink" title="特殊类型数据"></a>特殊类型数据</h4><ol>
+<li>某些类型的数据并于直接与内置类型一致，如低于秒级精度的时间戳</li>
+<li>IPv4地址也是一个例子，常用VARCHAR(15)列来存储，然而它们实际上是32位无符号整数，不是字符串，所以应该使用无符号整数存储IP地址,MySQL提供INET_ATON()和INET_NTOA()函数在这两种表示方法之间转换</li>
+</ol>
+<h3 id="MySQL-schema设计中的陷阱"><a href="#MySQL-schema设计中的陷阱" class="headerlink" title="MySQL schema设计中的陷阱"></a>MySQL schema设计中的陷阱</h3>
       
     </div>
 
@@ -522,7 +587,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -570,7 +635,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#选择优化的数据类型"><span class="nav-number">1.1.</span> <span class="nav-text">选择优化的数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本原则"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据类型选择"><span class="nav-number">1.1.2.</span> <span class="nav-text">数据类型选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#整数类型"><span class="nav-number">1.1.3.</span> <span class="nav-text">整数类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实数类型"><span class="nav-number">1.1.4.</span> <span class="nav-text">实数类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型"><span class="nav-number">1.1.5.</span> <span class="nav-text">字符串类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#VARCHAR和CHAR"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">VARCHAR和CHAR</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#VARCHAR"><span class="nav-number">1.1.5.1.1.</span> <span class="nav-text">VARCHAR</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#选择优化的数据类型"><span class="nav-number">1.1.</span> <span class="nav-text">选择优化的数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本原则"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据类型选择"><span class="nav-number">1.1.2.</span> <span class="nav-text">数据类型选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#整数类型"><span class="nav-number">1.1.3.</span> <span class="nav-text">整数类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实数类型"><span class="nav-number">1.1.4.</span> <span class="nav-text">实数类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型"><span class="nav-number">1.1.5.</span> <span class="nav-text">字符串类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#VARCHAR和CHAR"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">VARCHAR和CHAR</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#VARCHAR"><span class="nav-number">1.1.5.1.1.</span> <span class="nav-text">VARCHAR</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CHAR"><span class="nav-number">1.1.5.1.2.</span> <span class="nav-text">CHAR</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BLOB和TEXT"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">BLOB和TEXT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用枚举-ENUM-代替字符串类型"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">使用枚举(ENUM)代替字符串类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日期和时间类型"><span class="nav-number">1.1.6.</span> <span class="nav-text">日期和时间类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#DATETIME"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">DATETIME</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TIMESTAMP"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">TIMESTAMP</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#位数据类型"><span class="nav-number">1.1.7.</span> <span class="nav-text">位数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择标识列"><span class="nav-number">1.1.8.</span> <span class="nav-text">选择标识列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊类型数据"><span class="nav-number">1.1.9.</span> <span class="nav-text">特殊类型数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-schema设计中的陷阱"><span class="nav-number">1.2.</span> <span class="nav-text">MySQL schema设计中的陷阱</span></a></li></ol></li></ol></div>
             
 
           </div>
