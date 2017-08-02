@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="N+1 selects problem123456# Customer表字段country外键关联另张表Countryclass Customer(models.Model):    country = models.ForeignKey(Country)class Country(models.Model):    name = models.CharField(max_length=32,)">
+<meta name="description" content="N+1 selects problem 由于Django ORM的懒加载特性，查询所有Customer记录时，对于每条记录都需要做一次对Country的查询，因而查询行为需要执行N(Customer记录数) + 1次 使用Django ORM 很容易犯下N+1查询的问题 使用DRF框架构建restful API很难避免N+1查询的问题123456# Customer表字段country外键关联另张">
 <meta name="keywords" content="Python,Django,DRF,Optimizing SQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Optimizing Django Rest Framework">
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/02/profiling-drf/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="N+1 selects problem123456# Customer表字段country外键关联另张表Countryclass Customer(models.Model):    country = models.ForeignKey(Country)class Country(models.Model):    name = models.CharField(max_length=32,)">
-<meta property="og:updated_time" content="2017-08-02T07:09:56.000Z">
+<meta property="og:description" content="N+1 selects problem 由于Django ORM的懒加载特性，查询所有Customer记录时，对于每条记录都需要做一次对Country的查询，因而查询行为需要执行N(Customer记录数) + 1次 使用Django ORM 很容易犯下N+1查询的问题 使用DRF框架构建restful API很难避免N+1查询的问题123456# Customer表字段country外键关联另张">
+<meta property="og:updated_time" content="2017-08-02T07:12:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Optimizing Django Rest Framework">
-<meta name="twitter:description" content="N+1 selects problem123456# Customer表字段country外键关联另张表Countryclass Customer(models.Model):    country = models.ForeignKey(Country)class Country(models.Model):    name = models.CharField(max_length=32,)">
+<meta name="twitter:description" content="N+1 selects problem 由于Django ORM的懒加载特性，查询所有Customer记录时，对于每条记录都需要做一次对Country的查询，因而查询行为需要执行N(Customer记录数) + 1次 使用Django ORM 很容易犯下N+1查询的问题 使用DRF框架构建restful API很难避免N+1查询的问题123456# Customer表字段country外键关联另张">
 
 
 
@@ -341,13 +341,13 @@
       
 
       
-        <h2 id="N-1-selects-problem"><a href="#N-1-selects-problem" class="headerlink" title="N+1 selects problem"></a>N+1 selects problem</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Customer表字段country外键关联另张表Country</div><div class="line">class Customer(models.Model):</div><div class="line">    country = models.ForeignKey(Country)</div><div class="line"></div><div class="line">class Country(models.Model):</div><div class="line">    name = models.CharField(max_length=32,)</div></pre></td></tr></table></figure>
-<ol>
+        <h2 id="N-1-selects-problem"><a href="#N-1-selects-problem" class="headerlink" title="N+1 selects problem"></a>N+1 selects problem</h2><ol>
 <li>由于Django ORM的懒加载特性，查询所有Customer记录时，对于每条记录都需要做一次对Country的查询，因而查询行为需要执行N(Customer记录数) + 1次</li>
 <li>使用Django ORM 很容易犯下N+1查询的问题</li>
-<li>使用DRF框架构建restful API很难避免N+1查询的问题<a id="more"></a>
+<li>使用DRF框架构建restful API很难避免N+1查询的问题<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Customer表字段country外键关联另张表Country</div><div class="line">class Customer(models.Model):</div><div class="line">    country = models.ForeignKey(Country)</div><div class="line"></div><div class="line">class Country(models.Model):</div><div class="line">    name = models.CharField(max_length=32,)</div></pre></td></tr></table></figure>
 </li>
 </ol>
+<a id="more"></a>
 <h2 id="DRF惯常性造成N-1问题的原因"><a href="#DRF惯常性造成N-1问题的原因" class="headerlink" title="DRF惯常性造成N+1问题的原因"></a>DRF惯常性造成N+1问题的原因</h2><ol>
 <li>由于Django ORM的懒加载特性，对于当前查询，只返回数据的最小集合</li>
 <li><p>DRF中，当一个serializer嵌套了另个serializer时，极有可能会导致严重的查询慢问题</p>
