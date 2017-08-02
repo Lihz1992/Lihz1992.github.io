@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/02/profiling-drf/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="N+1 selects problem 由于Django ORM的懒加载特性，查询所有Customer记录时，对于每条记录都需要做一次对Country的查询，因而查询行为需要执行N(Customer记录数) + 1次 使用Django ORM 很容易犯下N+1查询的问题 使用DRF框架构建restful API很难避免N+1查询的问题123456# Customer表字段country外键关联另张">
-<meta property="og:updated_time" content="2017-08-02T07:12:32.000Z">
+<meta property="og:updated_time" content="2017-08-02T07:39:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Optimizing Django Rest Framework">
 <meta name="twitter:description" content="N+1 selects problem 由于Django ORM的懒加载特性，查询所有Customer记录时，对于每条记录都需要做一次对Country的查询，因而查询行为需要执行N(Customer记录数) + 1次 使用Django ORM 很容易犯下N+1查询的问题 使用DRF框架构建restful API很难避免N+1查询的问题123456# Customer表字段country外键关联另张">
@@ -369,7 +369,23 @@
 <ol>
 <li><code>prefetch_related</code>用于多对多关系或1对多关系，<code>select_related</code>用于外键关系或1对1关系，<code>Prefetch</code>用于更复杂的<code>prefetch_related</code>查询，如过滤子集</li>
 </ol>
-<h2 id="解决DRF性能问题范式"><a href="#解决DRF性能问题范式" class="headerlink" title="解决DRF性能问题范式"></a>解决DRF性能问题范式</h2>
+<h2 id="解决DRF性能问题"><a href="#解决DRF性能问题" class="headerlink" title="解决DRF性能问题"></a>解决DRF性能问题</h2><h3 id="解决drf性能问题的范式"><a href="#解决drf性能问题的范式" class="headerlink" title="解决drf性能问题的范式"></a>解决drf性能问题的范式</h3><ol>
+<li><p>当某serializer需要查询嵌套的字段，添加一个类静态方法<code>setup_eager_loading</code>，在方法中实现热加载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">queryset = Customer.objects.all()</div><div class="line">queryset = CustomerSerializer.setup_eager_loading(queryset)</div><div class="line">data = CustomerSerializer(queryset).data</div></pre></td></tr></table></figure>
+</li>
+<li><p>在视图中，重写<code>get_queryset</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def get_queryset(self):</div><div class="line">    queryset = Customers.objects.all()</div><div class="line">    return self.get_serializer_class().setup_eager_loading(queryset)</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><ul>
+<li><p>表结构如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">from django.contrib.auth.models import User</div><div class="line"></div><div class="line">class Event:</div><div class="line">    creator = models.ForeignKey(User)</div><div class="line">    name = models.TextField()</div><div class="line">    event_date = models.DateTimeField()</div><div class="line"></div><div class="line">class Attendee:</div><div class="line">    events = models.ManyToManyField(Event, related_name=&apos;attendees&apos;)</div><div class="line">    organization = models.ForeignKey(Organization, null=True)</div><div class="line"></div><div class="line">class Organization:</div><div class="line">    name = models.TextField()</div></pre></td></tr></table></figure>
+</li>
+<li><p>序列化如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class EventSerializer(serializers.ModelSerializer):</div><div class="line">    creator = serializers.StringRelatedField()</div><div class="line">    attendees = AttendeeSerializer(many=True)</div><div class="line">    unaffiliated_attendees = AttendeeSerializer(many=True)</div><div class="line"></div><div class="line">    @staticmethod</div><div class="line">    def setup_eager_loading(queryset):</div><div class="line">        queryset = queryset.select_related(&apos;creator&apos;)</div><div class="line"></div><div class="line">        queryset = queryset.prefetch_related(</div><div class="line">            &apos;attendees&apos;,</div><div class="line">            &apos;attendees__organization&apos;)</div><div class="line"></div><div class="line">        queryset = queryset.prefetch_related(</div><div class="line">            Prefetch(&apos;unaffiliated_attendees&apos;,</div><div class="line">                queryset=Attendee.objects.filter(organization__isnull=True))</div><div class="line">            )</div><div class="line">        return queryset</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
       
     </div>
 
@@ -552,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#N-1-selects-problem"><span class="nav-number">1.</span> <span class="nav-text">N+1 selects problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF惯常性造成N-1问题的原因"><span class="nav-number">2.</span> <span class="nav-text">DRF惯常性造成N+1问题的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eager-loading"><span class="nav-number">3.</span> <span class="nav-text">Eager loading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决DRF性能问题范式"><span class="nav-number">4.</span> <span class="nav-text">解决DRF性能问题范式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#N-1-selects-problem"><span class="nav-number">1.</span> <span class="nav-text">N+1 selects problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DRF惯常性造成N-1问题的原因"><span class="nav-number">2.</span> <span class="nav-text">DRF惯常性造成N+1问题的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eager-loading"><span class="nav-number">3.</span> <span class="nav-text">Eager loading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决DRF性能问题"><span class="nav-number">4.</span> <span class="nav-text">解决DRF性能问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决drf性能问题的范式"><span class="nav-number">4.1.</span> <span class="nav-text">解决drf性能问题的范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">4.2.</span> <span class="nav-text">示例</span></a></li></ol></li></ol></div>
             
 
           </div>
