@@ -266,6 +266,163 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/08/08/index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/08/index/" itemprop="url">MySQL 索引</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-08T11:43:36+08:00">
+                2017-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/08/index/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/08/index/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><h2 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h2><h3 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h3><h3 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h3><h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><h3 id="三星原则"><a href="#三星原则" class="headerlink" title="三星原则"></a>三星原则</h3><ol>
+<li>索引将相关的记录放到一起</li>
+<li>索引中的数据顺序和查找中的排列顺序一致</li>
+<li>索引中包含了查询中需要的全部列</li>
+</ol>
+<h3 id="索引是否是最好的解决方案"><a href="#索引是否是最好的解决方案" class="headerlink" title="索引是否是最好的解决方案"></a>索引是否是最好的解决方案</h3><ol>
+<li>当且仅当索引帮助存储引擎快速查找到记录带来的好处大于其带来的额外工作时</li>
+<li>小型表，全表扫描更搞笑；中、大型表索引非常有效；特大型表建立和使用索引的代价相当大，应当考虑采用某些可以直接区分出查询需要的一组数据的技术如分区技术</li>
+<li>表的数量特别多时，可以建立一个元数据信息表，用以查询需要用到的某些特性</li>
+</ol>
+<h2 id="高性能的索引策略"><a href="#高性能的索引策略" class="headerlink" title="高性能的索引策略"></a>高性能的索引策略</h2><h3 id="独立的列"><a href="#独立的列" class="headerlink" title="独立的列"></a>独立的列</h3><p>索引的列不能是表达式的一部分，也不能是函数的参数，应该养成简化<code>WHERE</code>条件的习惯，始终将索引列单独放在比较符号的一侧</p>
+<h3 id="前缀索引和索引选择性"><a href="#前缀索引和索引选择性" class="headerlink" title="前缀索引和索引选择性"></a>前缀索引和索引选择性</h3><ol>
+<li>对于很长的字符列，通常可以索引开始的部分字符，以节约索引空间，提高索引效率，带来的问题则是会降低索引的选择性</li>
+<li>索引的选择性指的是，不重复的索引值(基数)和数据表的记录总数的比值，索引的选择性越高查询效率越高</li>
+</ol>
+<h4 id="前缀索引策略"><a href="#前缀索引策略" class="headerlink" title="前缀索引策略"></a>前缀索引策略</h4><p>应当选择足够长的前缀以保证较高的选择性(选择性趋近于索引整个列)，即基数接近完整列的基数</p>
+<ol>
+<li>方法1：<ul>
+<li>找出最常见值列表<code>SELECT COUNT(*) AS cnt, column from database.table GROUP BY cnt DESC LIMIT 10;</code></li>
+<li>找出最频繁出现的前缀，n值区间[3, 无穷]取n值直至趋近上一步结果<code>SELECT COUNT(*) AS cnt, LEFT(column, n） from database.table GROUP BY cnt DESC LIMIT 10;</code></li>
+</ul>
+</li>
+<li>方法2：<ul>
+<li>计算完整列的选择性<code>SELECT COUNT(DISTINCT column)/COUNT(*) FROM database.table;</code></li>
+<li>在一次查询中，针对不同前缀长度进行计算<code>SELECT COUNT(DISTINCT LEFT(column, n1))/COUNT(*) AS sel1,
+ COUNT(DISTINCT LEFT(column, n2))/COUNT(*) AS sel2,
+ COUNT(DISTINCT LEFT(column, n3))/COUNT(*) AS sel3,
+ COUNT(DISTINCT LEFT(column, n4))/COUNT(*) AS sel4
+FROM database.table;</code></li>
+</ul>
+</li>
+<li>只看平均选择性在数据分布不均匀的情况下，可能会有陷阱。比如有张记录城市的表，城市惯常以”San”、”New”开头，在方法2中，前缀取4的时候平均选择性可能已经接近完整列的选择性，按1.2查询获取详细计数时，可以看到很明显的不均匀</li>
+<li>创建前缀索引<code>ALTER TABLE database.table ADD KEY (column(n))</code>n值为前缀位数</li>
+<li>前缀索引用于长字符列，使得索引更小、更快，缺点是MySQL无法使用前缀索引做<code>ORDER BY</code>和<code>GROUP BY</code>，也无法使用前缀索引做覆盖扫描</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/08/06/yield/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1409,135 +1566,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/18/query/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/18/query/" itemprop="url">MySQL-查询优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T16:35:50+08:00">
-                2017-07-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/18/query/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/18/query/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h2><ol>
-<li>查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快</li>
-<li>查询的生命周期： 客户端发起-&gt;服务器-&gt;解析后生成执行计划-&gt;执行-&gt;返回客户端
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/18/query/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1587,7 +1615,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1600,7 +1628,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
