@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="摘要索引的类型B-Tree索引哈希索引索引的优点三星原则 索引将相关的记录放到一起 索引中的数据顺序和查找中的排列顺序一致 索引中包含了查询中需要的全部列  索引是否是最好的解决方案 当且仅当索引帮助存储引擎快速查找到记录带来的好处大于其带来的额外工作时 小型表，全表扫描更搞笑；中、大型表索引非常有效；特大型表建立和使用索引的代价相当大，应当考虑采用某些可以直接区分出查询需要的一组数据的技术如分区">
+<meta name="description" content="摘要">
 <meta name="keywords" content="MySQL,Index">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL 索引">
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/08/index/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="摘要索引的类型B-Tree索引哈希索引索引的优点三星原则 索引将相关的记录放到一起 索引中的数据顺序和查找中的排列顺序一致 索引中包含了查询中需要的全部列  索引是否是最好的解决方案 当且仅当索引帮助存储引擎快速查找到记录带来的好处大于其带来的额外工作时 小型表，全表扫描更搞笑；中、大型表索引非常有效；特大型表建立和使用索引的代价相当大，应当考虑采用某些可以直接区分出查询需要的一组数据的技术如分区">
-<meta property="og:updated_time" content="2017-08-08T08:37:00.000Z">
+<meta property="og:description" content="摘要">
+<meta property="og:updated_time" content="2017-08-08T09:24:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 索引">
-<meta name="twitter:description" content="摘要索引的类型B-Tree索引哈希索引索引的优点三星原则 索引将相关的记录放到一起 索引中的数据顺序和查找中的排列顺序一致 索引中包含了查询中需要的全部列  索引是否是最好的解决方案 当且仅当索引帮助存储引擎快速查找到记录带来的好处大于其带来的额外工作时 小型表，全表扫描更搞笑；中、大型表索引非常有效；特大型表建立和使用索引的代价相当大，应当考虑采用某些可以直接区分出查询需要的一组数据的技术如分区">
+<meta name="twitter:description" content="摘要">
 
 
 
@@ -341,7 +341,8 @@
       
 
       
-        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><h2 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h2><h3 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h3><h3 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h3><h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><h3 id="三星原则"><a href="#三星原则" class="headerlink" title="三星原则"></a>三星原则</h3><ol>
+        <h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><a id="more"></a>
+<h2 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h2><h3 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h3><h3 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h3><h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><h3 id="三星原则"><a href="#三星原则" class="headerlink" title="三星原则"></a>三星原则</h3><ol>
 <li>索引将相关的记录放到一起</li>
 <li>索引中的数据顺序和查找中的排列顺序一致</li>
 <li>索引中包含了查询中需要的全部列</li>
