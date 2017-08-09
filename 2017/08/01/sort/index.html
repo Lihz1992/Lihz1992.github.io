@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="Bubble sorted冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后”，时间复杂度$O(n^2)$1234567def bubble_sort(a_list):    for i in range(len(a_list)-1):        print(a_list)">
+<meta name="description" content="Bubble sorted 冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后” 时间复杂度$O(n^2)$123456def bubble_sort(a_list):    for i in range(len(a_list)-1):        for j in range(len(">
 <meta name="keywords" content="Python,algorithms">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python 常规排序实现">
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/01/sort/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="Bubble sorted冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后”，时间复杂度$O(n^2)$1234567def bubble_sort(a_list):    for i in range(len(a_list)-1):        print(a_list)">
-<meta property="og:updated_time" content="2017-08-08T16:02:24.000Z">
+<meta property="og:description" content="Bubble sorted 冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后” 时间复杂度$O(n^2)$123456def bubble_sort(a_list):    for i in range(len(a_list)-1):        for j in range(len(">
+<meta property="og:updated_time" content="2017-08-09T02:50:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 常规排序实现">
-<meta name="twitter:description" content="Bubble sorted冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后”，时间复杂度$O(n^2)$1234567def bubble_sort(a_list):    for i in range(len(a_list)-1):        print(a_list)">
+<meta name="twitter:description" content="Bubble sorted 冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后” 时间复杂度$O(n^2)$123456def bubble_sort(a_list):    for i in range(len(a_list)-1):        for j in range(len(">
 
 
 
@@ -341,10 +341,28 @@
       
 
       
-        <h2 id="Bubble-sorted"><a href="#Bubble-sorted" class="headerlink" title="Bubble sorted"></a>Bubble sorted</h2><p>冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后”，时间复杂度$O(n^2)$<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def bubble_sort(a_list):</div><div class="line">    for i in range(len(a_list)-1):</div><div class="line">        print(a_list)</div><div class="line">        for j in range(len(a_list)-i-1):</div><div class="line">            if a_list[j] &gt; a_list[j+1]:</div><div class="line">                a_list[j], a_list[j+1] = a_list[j+1], a_list[j]</div><div class="line">    return a_list</div></pre></td></tr></table></figure></p>
+        <h2 id="Bubble-sorted"><a href="#Bubble-sorted" class="headerlink" title="Bubble sorted"></a>Bubble sorted</h2><ol>
+<li>冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后”</li>
+<li>时间复杂度$O(n^2)$<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def bubble_sort(a_list):</div><div class="line">    for i in range(len(a_list)-1):</div><div class="line">        for j in range(len(a_list)-i-1):</div><div class="line">            if a_list[j] &gt; a_list[j+1]:</div><div class="line">                a_list[j], a_list[j+1] = a_list[j+1], a_list[j]</div><div class="line">    return a_list</div></pre></td></tr></table></figure>
+</li>
+</ol>
 <a id="more"></a>
-<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><p>选择排序：每个回合，选择最小的元素，置于该次排序起始位置，即第i次排序在待排序列表r[i:]中选择最小记录，与r[i]交换，时间复杂度$O(n^2)$<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def select_sort(a_list):</div><div class="line">    for i in range(len(a_list)-1):</div><div class="line">        for j in range(i, len(a_list)-1):</div><div class="line">            if a_list[j] &lt; a_list[i]:</div><div class="line">                a_list[j], a_list[i] = a_list[i], a_list[j]</div><div class="line">    return a_list</div></pre></td></tr></table></figure></p>
-<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2>
+<h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><ol>
+<li>选择排序：每个回合，选择最小的元素，置于该次排序起始位置，即第i次排序在待排序列表r[i:]中选择最小记录，与r[i]交换</li>
+<li>时间复杂度$O(n^2)$<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def select_sort(a_list):</div><div class="line">    for i in range(len(a_list)-1):</div><div class="line">        for j in range(i, len(a_list)-1):</div><div class="line">            if a_list[j] &lt; a_list[i]:</div><div class="line">                a_list[j], a_list[i] = a_list[i], a_list[j]</div><div class="line">    return a_list</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h2><ol>
+<li>每个回合假设当前元素前面的元素有序，把当前位置元素插入到前面的元素序列中的合理位置(因前元素序列有序，可以二分查找所应放置的位置)</li>
+<li>时间复杂度$O(n^2)$<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def insert_sort(a_list):</div><div class="line">    for i in range(1, len(a_list)):</div><div class="line">        for j in range(0, i):</div><div class="line">            if a_list[i] &lt; a_list[j]:</div><div class="line">                a_list[i], a_list[j] = a_list[j], a_list[i]</div><div class="line">    return a_list</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="合并排序"><a href="#合并排序" class="headerlink" title="合并排序"></a>合并排序</h2><ol>
+<li>二路合并排序，将原始数据集分成两部分，分别进行排序，然后将排序后的子数据集进行合并</li>
+<li>时间复杂度: $O(nlogn)$<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">def merge_sort(a_list):</div><div class="line">    if len(a_list) &lt;= 1:</div><div class="line">        return a_list</div><div class="line">    k = len(a_list) // 2</div><div class="line">    left = merge_sort(a_list[:k])</div><div class="line">    right = merge_sort(a_list[k:])</div><div class="line">    return merge(left, right)</div><div class="line"></div><div class="line">def merge(left, right):</div><div class="line">    i, j = 0, 0</div><div class="line">    result = []</div><div class="line">    while i &lt; len(left) and j &lt; len(right):</div><div class="line">        if left[i] &lt; right[j]:</div><div class="line">            result.append(left[i])</div><div class="line">            i += 1</div><div class="line">        else:</div><div class="line">            result.append((right[j]))</div><div class="line">            j += 1</div><div class="line">    result += left[i:]</div><div class="line">    result += right[j:]</div><div class="line">    return result</div></pre></td></tr></table></figure>
+</li>
+</ol>
+
       
     </div>
 
@@ -527,7 +545,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bubble-sorted"><span class="nav-number">1.</span> <span class="nav-text">Bubble sorted</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序"><span class="nav-number">2.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入排序"><span class="nav-number">3.</span> <span class="nav-text">插入排序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bubble-sorted"><span class="nav-number">1.</span> <span class="nav-text">Bubble sorted</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序"><span class="nav-number">2.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入排序"><span class="nav-number">3.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合并排序"><span class="nav-number">4.</span> <span class="nav-text">合并排序</span></a></li></ol></div>
             
 
           </div>
