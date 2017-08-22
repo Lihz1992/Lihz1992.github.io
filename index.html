@@ -266,6 +266,133 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/08/18/元编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/18/元编程/" itemprop="url">Python 动态属性及特性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T09:55:38+08:00">
+                2017-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/18/元编程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/18/元编程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="动态属性与特性"><a href="#动态属性与特性" class="headerlink" title="动态属性与特性"></a>动态属性与特性</h2><p>统一访问原则: 不管服务是由存储还是计算实现，一个模块提供的所有服务都应该通过统一的方式使用<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/18/元编程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/08/09/上下文管理器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -534,7 +661,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/06/yield/" itemprop="url">yield & coroutine</a></h1>
+                <a class="post-title-link" href="/2017/08/06/yield/" itemprop="url">协程</a></h1>
         
 
         <div class="post-meta">
@@ -593,14 +720,22 @@
 
       
         
-          <h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>yield释义: 产出和让步。<code>yield item</code>产出一个值，提供给next()的调用方，此外，还会做出让步，暂停执行生成器，让调用方继续工作，直至下次调用next()<br>协程与生成器类似，都是定义体中包含<code>yield</code>关键字的函数。不同在于，协程中<code>yield</code>通常出现在表达式的右边，可以产出值也可以不产出。协程还可能接收调用方通过.send()方法发送的数据<br><code>yield</code>关键字还可以不接收或传出数据，不管数据如何流动，<code>yield</code>都是一种流程控制工具，使用它可以实现协作式多任务，协程可以把控制器让渡给中心调度程序，从而激活其它协程<br>把<code>yield</code>视作控制流程的方式<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/06/yield/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>yield释义: 产出和让步。<code>yield item</code>产出一个值，提供给next()的调用方，此外，还会做出让步，暂停执行生成器，让调用方继续工作，直至下次调用next()<br>协程与生成器类似，都是定义体中包含<code>yield</code>关键字的函数。不同在于，协程中<code>yield</code>通常出现在表达式的右边，可以产出值也可以不产出。协程还可能接收调用方通过.send()方法发送的数据<br><code>yield</code>关键字还可以不接收或传出数据，不管数据如何流动，<code>yield</code>都是一种流程控制工具，使用它可以实现协作式多任务，协程可以把控制器让渡给中心调度程序，从而激活其它协程<br>把<code>yield</code>视作控制流程的方式</p>
+<h3 id="用作生成器的协程的基本行为"><a href="#用作生成器的协程的基本行为" class="headerlink" title="用作生成器的协程的基本行为"></a>用作生成器的协程的基本行为</h3><ol>
+<li>协程可以身处四个状态中的一个<ul>
+<li><code>GEN_CREATED</code> 等待开始执行</li>
+<li><code>GEN_RUNNING</code> 解释器正在执行</li>
+<li><code>GEN_SUSPENDED</code> 在<code>yield</code>表达式处暂停</li>
+<li><code>GEN_CLOSED</code> 执行结束</li>
+</ul>
+</li>
+<li>仅当协程处于暂停状态时才能调用send方法，当协程未激活(处于<code>GEN_CREATED</code>状态时)会抛出TypeError，因而协程的使用，都需要先调用next()函数，这一步称为‘预激协程’</li>
+</ol>
+<h3 id="预激协程的装饰器"><a href="#预激协程的装饰器" class="headerlink" title="预激协程的装饰器"></a>预激协程的装饰器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from functools import wraps</div><div class="line"></div><div class="line"></div><div class="line">def coroutine(func):</div><div class="line">    @wraps(func):</div><div class="line">    def primer(*args, **kwargs):</div><div class="line">        gen = func(*args, **kwargs)</div><div class="line">        next(gen)</div><div class="line">        return gen</div><div class="line">    return primer</div></pre></td></tr></table></figure>
+<p>使用<code>yield from</code>句法调用协程时，会自动预激</p>
+<h3 id="终止协程和异常处理"><a href="#终止协程和异常处理" class="headerlink" title="终止协程和异常处理"></a>终止协程和异常处理</h3>
+          
         
       
     </div>
@@ -1411,136 +1546,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/24/gc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/24/gc/" itemprop="url">object reference & gc</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T16:01:36+08:00">
-                2017-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/24/gc/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/24/gc/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="标识、类型和值"><a href="#标识、类型和值" class="headerlink" title="标识、类型和值"></a>标识、类型和值</h2><p>每个变量都有标识、类型和值。对象一旦创建，它的标识绝不会变，可以视标识为对象在内存中的地址。is运算符比较两个对象的标识，id()函数返回对象标识的整数表示。</p>
-<ul>
-<li>CPython中 id()返回对象的内存地址，在其它解释器中可能是别的值</li>
-<li>ID一定是唯一的数值标注，且在对象的声明周期中绝不会变
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/24/gc/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1590,7 +1595,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1603,7 +1608,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

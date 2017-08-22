@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/01/sort/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="Bubble sorted 冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后” 时间复杂度$O(n^2)$123456def bubble_sort(a_list):    for i in range(len(a_list)-1):        for j in range(len(">
-<meta property="og:updated_time" content="2017-08-10T01:33:00.000Z">
+<meta property="og:updated_time" content="2017-08-17T05:24:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 常规排序实现">
 <meta name="twitter:description" content="Bubble sorted 冒泡排序: 每个回合，从第一个元素开始和它后面的元素比较，如果该元素比后一元素大就交换;内层循环每次遍历达到的结果是使得剩下的元素中最大的那个放到了序列的“最后” 时间复杂度$O(n^2)$123456def bubble_sort(a_list):    for i in range(len(a_list)-1):        for j in range(len(">
@@ -347,11 +347,6 @@
 </li>
 </ol>
 <a id="more"></a>
-<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><ol>
-<li>快速排序: 每个回合，选择第一个元素作为主元(key)，有俩指针left(指向主元后一位置)、right(指向列表最后一位)，两个指针朝中间移动，left遇到比key大的停止，right遇到比key小得停止，如此时，交换left位置元素与right位置元素，重复操作，直至left&gt;right,此时确定key元素位置为right所在位置，交换俩元素位置。之后递归对key左右两边列表排序</li>
-<li>时间复杂度$O(nlgn)$<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">def quick_sort(lists, left, right):</div><div class="line">    if left &gt;= right:</div><div class="line">        return lists</div><div class="line">    key = lists[left]</div><div class="line">    low = left</div><div class="line">    high = right</div><div class="line"></div><div class="line">    while left &lt; right:</div><div class="line">        while left &lt; right and lists[right] &gt;= key:</div><div class="line">            right -= 1</div><div class="line">        lists[left] = lists[right]</div><div class="line">        while left &lt; right and lists[left] &lt;= key:</div><div class="line">            left += 1</div><div class="line">        lists[right] = lists[left]</div><div class="line">    lists[right] = key</div><div class="line">    quick_sort(lists, low, left - 1)</div><div class="line">    quick_sort(lists, right + 1, high)</div><div class="line">    return lists</div></pre></td></tr></table></figure>
-</li>
-</ol>
 <h2 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h2><ol>
 <li>选择排序：每个回合，选择最小的元素，置于该次排序起始位置，即第i次排序在待排序列表r[i:]中选择最小记录，与r[i]交换</li>
 <li>时间复杂度$O(n^2)$<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">def select_sort(a_list):</div><div class="line">    for i in range(len(a_list)-1):</div><div class="line">        for j in range(i, len(a_list)-1):</div><div class="line">            if a_list[j] &lt; a_list[i]:</div><div class="line">                a_list[j], a_list[i] = a_list[i], a_list[j]</div><div class="line">    return a_list</div></pre></td></tr></table></figure>
@@ -502,7 +497,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -515,7 +510,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -550,7 +545,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bubble-sorted"><span class="nav-number">1.</span> <span class="nav-text">Bubble sorted</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序"><span class="nav-number">2.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序"><span class="nav-number">3.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入排序"><span class="nav-number">4.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合并排序"><span class="nav-number">5.</span> <span class="nav-text">合并排序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bubble-sorted"><span class="nav-number">1.</span> <span class="nav-text">Bubble sorted</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择排序"><span class="nav-number">2.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入排序"><span class="nav-number">3.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合并排序"><span class="nav-number">4.</span> <span class="nav-text">合并排序</span></a></li></ol></div>
             
 
           </div>
