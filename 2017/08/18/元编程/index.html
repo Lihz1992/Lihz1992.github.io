@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/18/元编程/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="动态属性与特性统一访问原则: 不管服务是由存储还是计算实现，一个模块提供的所有服务都应该通过统一的方式使用 特性propertyproperty类，常用作装饰器。其完整签名如下:property(fget=None, fset=None, fdel=None, doc=None)所有参数都可选，如果未把函数传给某参数，则得到的对象就不允许执行相应的操作。">
-<meta property="og:updated_time" content="2017-08-22T06:11:39.000Z">
+<meta property="og:updated_time" content="2017-08-22T06:21:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 动态属性及特性">
 <meta name="twitter:description" content="动态属性与特性统一访问原则: 不管服务是由存储还是计算实现，一个模块提供的所有服务都应该通过统一的方式使用 特性propertyproperty类，常用作装饰器。其完整签名如下:property(fget=None, fset=None, fdel=None, doc=None)所有参数都可选，如果未把函数传给某参数，则得到的对象就不允许执行相应的操作。">
@@ -370,9 +370,9 @@
 <li>特殊方法不会被同名实例属性遮盖</li>
 </ol>
 <h4 id="delattr-self-name"><a href="#delattr-self-name" class="headerlink" title="__delattr__(self, name)"></a><code>__delattr__(self, name)</code></h4><p>del语句删除属性，调用该方法</p>
-<h4 id="dir-self"><a href="#dir-self" class="headerlink" title="__dir__(self)"></a><code>__dir__(self)</code></h4><p>dir(obj)触发`Class.<strong>dir</strong>(obj)``</p>
+<h4 id="dir-self"><a href="#dir-self" class="headerlink" title="__dir__(self)"></a><code>__dir__(self)</code></h4><p>dir(obj)触发<code>Class.__dir__(obj)</code></p>
 <h4 id="getattr-self-name"><a href="#getattr-self-name" class="headerlink" title="__getattr__(self, name)"></a><code>__getattr__(self, name)</code></h4><p>仅当获取指定的属性失败，搜索过obj、Class和超类后调用。表达式obj.no_such_attr, getattr(obj, ‘no_such_attr’), hasattr(obj, ‘no_such_attr’)可能会触发。</p>
-<h4 id="getattribute-self-name"><a href="#getattribute-self-name" class="headerlink" title="__getattribute__(self, name)"></a><code>__getattribute__(self, name)</code></h4><p>尝试获取指定属性时总会调用这个方法，当寻找的属性是特殊属性或特殊方法除外。点号与getattr、hasattr内置函数会触发该方法，调用该方法且抛出AttributeError异常时，才会调用<code>__getattr__</code>方法。为了在获取obj实例的属性时不导致无限递归，<code>__getattribute__</code>方法的实现要使用`super().<strong>getattribute</strong>(obj, name)``</p>
+<h4 id="getattribute-self-name"><a href="#getattribute-self-name" class="headerlink" title="__getattribute__(self, name)"></a><code>__getattribute__(self, name)</code></h4><p>尝试获取指定属性时总会调用这个方法，当寻找的属性是特殊属性或特殊方法除外。点号与getattr、hasattr内置函数会触发该方法，调用该方法且抛出AttributeError异常时，才会调用<code>__getattr__</code>方法。为了在获取obj实例的属性时不导致无限递归，<code>__getattribute__</code>方法的实现要使用<code>super().__getattribute__(obj, name)</code></p>
 <h4 id="setattr-self-name-value"><a href="#setattr-self-name-value" class="headerlink" title="__setattr__(self, name, value)"></a><code>__setattr__(self, name, value)</code></h4><p>尝试设置指定的属性时调用该方法</p>
 
       
