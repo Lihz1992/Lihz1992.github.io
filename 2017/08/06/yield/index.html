@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/06/yield/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="协程yield释义: 产出和让步。yield item产出一个值，提供给next()的调用方，此外，还会做出让步，暂停执行生成器，让调用方继续工作，直至下次调用next()协程与生成器类似，都是定义体中包含yield关键字的函数。不同在于，协程中yield通常出现在表达式的右边，可以产出值也可以不产出。协程还可能接收调用方通过.send()方法发送的数据yield关键字还可以不接收或传出数据，不管">
-<meta property="og:updated_time" content="2017-08-17T02:05:01.000Z">
+<meta property="og:updated_time" content="2017-08-24T09:25:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="协程">
 <meta name="twitter:description" content="协程yield释义: 产出和让步。yield item产出一个值，提供给next()的调用方，此外，还会做出让步，暂停执行生成器，让调用方继续工作，直至下次调用next()协程与生成器类似，都是定义体中包含yield关键字的函数。不同在于，协程中yield通常出现在表达式的右边，可以产出值也可以不产出。协程还可能接收调用方通过.send()方法发送的数据yield关键字还可以不接收或传出数据，不管">
@@ -354,7 +354,7 @@
 </ol>
 <h3 id="预激协程的装饰器"><a href="#预激协程的装饰器" class="headerlink" title="预激协程的装饰器"></a>预激协程的装饰器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from functools import wraps</div><div class="line"></div><div class="line"></div><div class="line">def coroutine(func):</div><div class="line">    @wraps(func):</div><div class="line">    def primer(*args, **kwargs):</div><div class="line">        gen = func(*args, **kwargs)</div><div class="line">        next(gen)</div><div class="line">        return gen</div><div class="line">    return primer</div></pre></td></tr></table></figure>
 <p>使用<code>yield from</code>句法调用协程时，会自动预激</p>
-<h3 id="终止协程和异常处理"><a href="#终止协程和异常处理" class="headerlink" title="终止协程和异常处理"></a>终止协程和异常处理</h3>
+
       
     </div>
 
@@ -504,7 +504,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -539,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#协程"><span class="nav-number">1.</span> <span class="nav-text">协程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用作生成器的协程的基本行为"><span class="nav-number">1.1.</span> <span class="nav-text">用作生成器的协程的基本行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预激协程的装饰器"><span class="nav-number">1.2.</span> <span class="nav-text">预激协程的装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#终止协程和异常处理"><span class="nav-number">1.3.</span> <span class="nav-text">终止协程和异常处理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#协程"><span class="nav-number">1.</span> <span class="nav-text">协程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用作生成器的协程的基本行为"><span class="nav-number">1.1.</span> <span class="nav-text">用作生成器的协程的基本行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预激协程的装饰器"><span class="nav-number">1.2.</span> <span class="nav-text">预激协程的装饰器</span></a></li></ol></li></ol></div>
             
 
           </div>

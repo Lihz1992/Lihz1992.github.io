@@ -1,0 +1,805 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Fluent Python,描述符," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="abstract描述符是对多个属性运用相同存取逻辑的一种方式  描述符是实现了特殊协议的类，这个类包括__get__、__set__、__delete__方法 property类实现了完整的描述符协议，classmethod、staticmathod装饰器也使用到 描述符类常见角色: 描述符类:实现描述符协议的类 托管类: 把描述符实例声明为类属性的类 描述符实例 托管实例 储存属性:托管实例中存">
+<meta name="keywords" content="Python,Fluent Python,描述符">
+<meta property="og:type" content="article">
+<meta property="og:title" content="描述符">
+<meta property="og:url" content="http://lihz1992.github.io/2017/08/28/描述符/index.html">
+<meta property="og:site_name" content="Lihz&#39;s workspace">
+<meta property="og:description" content="abstract描述符是对多个属性运用相同存取逻辑的一种方式  描述符是实现了特殊协议的类，这个类包括__get__、__set__、__delete__方法 property类实现了完整的描述符协议，classmethod、staticmathod装饰器也使用到 描述符类常见角色: 描述符类:实现描述符协议的类 托管类: 把描述符实例声明为类属性的类 描述符实例 托管实例 储存属性:托管实例中存">
+<meta property="og:updated_time" content="2017-08-31T03:51:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="描述符">
+<meta name="twitter:description" content="abstract描述符是对多个属性运用相同存取逻辑的一种方式  描述符是实现了特殊协议的类，这个类包括__get__、__set__、__delete__方法 property类实现了完整的描述符协议，classmethod、staticmathod装饰器也使用到 描述符类常见角色: 描述符类:实现描述符协议的类 托管类: 把描述符实例声明为类属性的类 描述符实例 托管实例 储存属性:托管实例中存">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lihz1992.github.io/2017/08/28/描述符/"/>
+
+
+
+
+
+  <title>描述符 | Lihz's workspace</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lihz's workspace</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">The beauty I see.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/08/28/描述符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">描述符</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-28T14:31:26+08:00">
+                2017-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/28/描述符/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/28/描述符/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h2><p>描述符是对多个属性运用相同存取逻辑的一种方式</p>
+<ol>
+<li>描述符是实现了特殊协议的类，这个类包括<code>__get__</code>、<code>__set__</code>、<code>__delete__</code>方法</li>
+<li><code>property</code>类实现了完整的描述符协议，<code>classmethod</code>、<code>staticmathod</code>装饰器也使用到</li>
+<li>描述符类常见角色:<ul>
+<li>描述符类:实现描述符协议的类</li>
+<li>托管类: 把描述符实例声明为类属性的类</li>
+<li>描述符实例</li>
+<li>托管实例</li>
+<li>储存属性:托管实例中存储自身托管属性的属性</li>
+<li>托管属性:托管类中由描述符实例处理的公开属性<a id="more"></a>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="描述符"><a href="#描述符" class="headerlink" title="描述符"></a>描述符</h2><p>描述符的典型用途之一:管理数据属性，描述符的<code>__set__</code>方法使用托管实例中的同名属性覆盖(即插手接管)了要设置的属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">import abc</div><div class="line"></div><div class="line"></div><div class="line">class AutoStorage:</div><div class="line">    __counter = 0</div><div class="line"></div><div class="line">    def __init__(self):</div><div class="line">        cls = self.__class__</div><div class="line">        self.storage_name = &quot;_&#123;&#125;#&#123;&#125;&quot;.format(cls.__name__, cls.__counter)</div><div class="line">        cls.__counter += 1</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        setattr(instance, self.storage_name, value)</div><div class="line"></div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        if not instance:</div><div class="line">            return self</div><div class="line">        else:</div><div class="line">            return getattr(instance, self.storage_name)</div><div class="line"></div><div class="line"></div><div class="line">class Validated(abc.ABC, AutoStorage):</div><div class="line">    def __set__(self, instance, value):</div><div class="line">        value = self.validate(instance, value)</div><div class="line">        super().__set__(instance, value)</div><div class="line"></div><div class="line">    @abc.abstractmethod</div><div class="line">    def validate(self, instance, value):</div><div class="line">        &quot;&quot;&quot;return validated value or raise ValueError&quot;&quot;&quot;</div><div class="line"></div><div class="line"></div><div class="line">class Quantity(Validated):</div><div class="line">    def validate(self, instance, value):</div><div class="line">        if value &gt;= 0:</div><div class="line">            return value</div><div class="line">        else:</div><div class="line">            raise ValueError(&quot;value must be &gt; 0&quot;)</div><div class="line"></div><div class="line"></div><div class="line">class NonBlank(Validated):</div><div class="line">    def validate(self, isntance, value):</div><div class="line">        value.strip()</div><div class="line">        if len(value) == 0:</div><div class="line">            raise ValueError(&quot;value cannot be empty or blank&quot;)</div><div class="line">        return value</div><div class="line"></div><div class="line"></div><div class="line">class LineItem:</div><div class="line">    weight = Quantity()</div><div class="line">    price = Quantity()</div><div class="line">    description = NonBlank()</div><div class="line"></div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div></pre></td></tr></table></figure></p>
+<h3 id="覆盖型描述符"><a href="#覆盖型描述符" class="headerlink" title="覆盖型描述符"></a>覆盖型描述符</h3><ol>
+<li>Python存取属性的方式特别不对等(读取实例属性: 实例属性-&gt;类属性, 实例属性赋值: 在实例中创建属性，不影响类)</li>
+<li>实现<code>__set__</code>方法的描述符属于覆盖型描述符，虽然描述符是类属性，但实现<code>__set__</code>方法，会覆盖对实例属性的赋值操作</li>
+<li>通常覆盖型描述符既会实现<code>__set__</code>方法也会实现<code>__get__</code>方法。若只实现<code>__set__</code>方法，则只有写操作由描述符处理，通过实例读取描述符会返回描述符对象本身</li>
+</ol>
+<h3 id="非覆盖型描述符"><a href="#非覆盖型描述符" class="headerlink" title="非覆盖型描述符"></a>非覆盖型描述符</h3><ol>
+<li>没有实现<code>__set__</code>方法的描述符称为非覆盖型描述符。若设置了同名的实例属性，描述符会被遮盖，致使描述符无法处理那个实例的属性</li>
+</ol>
+<h3 id="在类中覆盖描述符"><a href="#在类中覆盖描述符" class="headerlink" title="在类中覆盖描述符"></a>在类中覆盖描述符</h3><ol>
+<li>不管描述符是否覆盖型，为类属性赋值都能覆盖描述符</li>
+<li>1揭示了读写属性的另一种不对等，读类属性的操作可以由依附在托管类上定义有<code>__get__</code>方法的描述符处理，但是写类属性的操作不会由依附在托管类上定义有<code>__set__</code>方法的描述符处理</li>
+<li>若想控制设置类属性的操作，要把描述符依附在类的类上，即元类。默认状况下，用户定义的类的元类是<code>type</code></li>
+</ol>
+<h3 id="方法是描述符"><a href="#方法是描述符" class="headerlink" title="方法是描述符"></a>方法是描述符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">def print_args(name, *args):</div><div class="line">    &quot;&quot;&quot;display arg detail&quot;&quot;&quot;</div><div class="line">    pass</div><div class="line"></div><div class="line">class Overidding:</div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        print_args(&apos;get&apos;, self, instance, owner)</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        print_args(&apos;set&apos;, self, instance, value)</div><div class="line"></div><div class="line"></div><div class="line">class OveriddingNoGet:</div><div class="line"></div><div class="line">    def __set__(self, instance, value):</div><div class="line">        print_args(&apos;set&apos;, self, instance, value)</div><div class="line"></div><div class="line"></div><div class="line">class NonOveridding:</div><div class="line">    def __get__(self, instance, owner):</div><div class="line">        print_args(&apos;get&apos;, self, instance, owner)</div><div class="line"></div><div class="line"></div><div class="line">class Managed:</div><div class="line">    over = Overidding()</div><div class="line">    over_no_get = OveriddingNoGet()</div><div class="line">    non_over = NonOveridding()</div><div class="line"></div><div class="line">    def spam(self):</div><div class="line">        pass</div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    obj = Managed()</div><div class="line">    obj.spam()        </div><div class="line">    # &lt;bound method Managed.spam of &lt;descriptorkinds.Managed object at 0x74c80c&gt;&gt;</div><div class="line">    Managed.spam()</div><div class="line">    # &lt;function Managed.spam at 0x734734&gt;</div><div class="line">    obj.spam = 7           # 函数没实现`__set__`方法，因此是非覆盖型描述符          </div><div class="line">    obj.spam</div><div class="line">    # 7</div></pre></td></tr></table></figure>
+<ol>
+<li><code>A function within a class becomes a bound method because all user-defined functions have a __get__ method, therefore they operate as descriptors when attached to a class</code></li>
+<li>函数没实现<code>__set__</code>方法，因此是非覆盖型描述符</li>
+<li>如示例，obj.spam 和 Managed.spam获取的是不同的对象，与描述符一样，通过托管类访问，函数的<code>__get__</code>方法会返回自身的引用。通过实例访问时，函数的<code>__get__</code>方法返回的是绑定方法对象:一种可调用对象，里面包装着函数，并把托管实例绑定给函数的第一个参数(即self)</li>
+<li>绑定方法对象还有个<code>__call__</code>方法，用于处理真正的调用过程。这个方法会调用<code>__func__</code>属性引用的原始函数，把函数的第一个参数设为绑定方法的<code>__self__</code>属性。即形参self的隐式绑定方式</li>
+<li>函数会变成绑定方法，是Python语言底层使用描述符的最好例证</li>
+</ol>
+<h2 id="描述符使用场景"><a href="#描述符使用场景" class="headerlink" title="描述符使用场景"></a>描述符使用场景</h2><ol>
+<li>使用特性(property)以保持简单</li>
+<li>只读描述符必须有<code>__set__</code>方法：<ul>
+<li>使用描述符实现只读属性，<code>__get__</code>和<code>__set__</code>方法必须都定义，否则，实例的同名属性会遮盖描述符。<code>__set__</code>方法只需抛出<code>AttributeError</code>异常并附带合适的错误信息即可</li>
+</ul>
+</li>
+<li>用于验证的描述符可以只有<code>__set__</code>方法<ul>
+<li><code>__set__</code>方法验证value后会在实例的<code>__dict__</code>属性中设置。读取属性时无需经过<code>__get__</code>方法处理</li>
+</ul>
+</li>
+<li>仅有<code>__get__</code>方法的描述符可以实现高效缓存<ul>
+<li>创建的非覆盖型描述符，可用于执行某些耗费资源的计算，然后为实例设置同名属性，缓存结果，同名实例属性会遮蔽描述符，因此后续访问会直接从实例的<code>__dict__</code>属性中获取值，而不会再触发描述符的<code>__get__</code>方法</li>
+</ul>
+</li>
+<li>非特殊的方法可以被实例属性遮盖<ul>
+<li>由于函数和方法只实现了<code>__get__</code>方法，它们不会处理同名实例属性的赋值操作。因此，像<code>obj.the_method = 7</code>这样赋值后，后续通过该实例访问<code>the_method</code>得到的是数字7。</li>
+<li>特殊方法不受这个问题的影响。解释器只会在类中寻找特殊方法，即，repr(obj)执行的是<code>obj.__class__.__repr__(obj)</code>，因此obj的<code>__repr__</code>属性对repr(obj)方法调用没有影响</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Fluent-Python/" rel="tag"># Fluent Python</a>
+          
+            <a href="/tags/描述符/" rel="tag"># 描述符</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/18/元编程/" rel="next" title="Python 动态属性及特性">
+                <i class="fa fa-chevron-left"></i> Python 动态属性及特性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/IMG_0645.JPG"
+               alt="Lihz" />
+          <p class="site-author-name" itemprop="name">Lihz</p>
+           
+              <p class="site-description motion-element" itemprop="description">You jump, I jump</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#abstract"><span class="nav-number">1.</span> <span class="nav-text">abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#描述符"><span class="nav-number">2.</span> <span class="nav-text">描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#覆盖型描述符"><span class="nav-number">2.1.</span> <span class="nav-text">覆盖型描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非覆盖型描述符"><span class="nav-number">2.2.</span> <span class="nav-text">非覆盖型描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在类中覆盖描述符"><span class="nav-number">2.3.</span> <span class="nav-text">在类中覆盖描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法是描述符"><span class="nav-number">2.4.</span> <span class="nav-text">方法是描述符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#描述符使用场景"><span class="nav-number">3.</span> <span class="nav-text">描述符使用场景</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lihz</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://lihz1992-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://lihz1992.github.io/2017/08/28/描述符/';
+          this.page.identifier = '2017/08/28/描述符/';
+          this.page.title = '描述符';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://lihz1992-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
