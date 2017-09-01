@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="MySQL,查询优化," />
+  <meta name="keywords" content="Fluent Python,metaclass," />
 
 
 
@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
-<meta name="keywords" content="MySQL,查询优化">
+<meta name="description" content="abstract 类元编程指在运行时创建或定制类的技巧 Python中，类是一等对象，因此任何时候都可以使用函数新建类，而无需使用class关键字 类装饰器也是函数，不过能审查、修改，甚至把被装饰的类替换成其他类 元类是类元编程最高级的工具: 使用元类可以创建具有某种特质的全新类种，例如我们见过的抽象基类 元类功能强大但更难掌握，类装饰器能使用更简单的方式解决很多问题">
+<meta name="keywords" content="Fluent Python,metaclass">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL-查询优化">
-<meta property="og:url" content="http://lihz1992.github.io/2017/07/18/query/index.html">
+<meta property="og:title" content="Fluent Python 类元编程">
+<meta property="og:url" content="http://lihz1992.github.io/2017/09/01/元编程-1/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
-<meta property="og:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
-<meta property="og:updated_time" content="2017-07-26T01:15:24.000Z">
+<meta property="og:description" content="abstract 类元编程指在运行时创建或定制类的技巧 Python中，类是一等对象，因此任何时候都可以使用函数新建类，而无需使用class关键字 类装饰器也是函数，不过能审查、修改，甚至把被装饰的类替换成其他类 元类是类元编程最高级的工具: 使用元类可以创建具有某种特质的全新类种，例如我们见过的抽象基类 元类功能强大但更难掌握，类装饰器能使用更简单的方式解决很多问题">
+<meta property="og:updated_time" content="2017-09-01T03:16:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL-查询优化">
-<meta name="twitter:description" content="慢查询 查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快 查询的生命周期： 客户端发起-&amp;gt;服务器-&amp;gt;解析后生成执行计划-&amp;gt;执行-&amp;gt;返回客户端">
+<meta name="twitter:title" content="Fluent Python 类元编程">
+<meta name="twitter:description" content="abstract 类元编程指在运行时创建或定制类的技巧 Python中，类是一等对象，因此任何时候都可以使用函数新建类，而无需使用class关键字 类装饰器也是函数，不过能审查、修改，甚至把被装饰的类替换成其他类 元类是类元编程最高级的工具: 使用元类可以创建具有某种特质的全新类种，例如我们见过的抽象基类 元类功能强大但更难掌握，类装饰器能使用更简单的方式解决很多问题">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://lihz1992.github.io/2017/07/18/query/"/>
+  <link rel="canonical" href="http://lihz1992.github.io/2017/09/01/元编程-1/"/>
 
 
 
 
 
-  <title>MySQL-查询优化 | Lihz's workspace</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Fluent Python 类元编程 | Lihz's workspace</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -266,7 +266,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/07/18/query/">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/09/01/元编程-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lihz">
@@ -283,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL-查询优化</h1>
+          <h1 class="post-title" itemprop="name headline">Fluent Python 类元编程</h1>
         
 
         <div class="post-meta">
@@ -295,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T16:35:50+08:00">
-                2017-07-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T09:34:19+08:00">
+                2017-09-01
               </time>
             
 
@@ -314,9 +314,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/07/18/query/#comments" itemprop="discussionUrl">
+                <a href="/2017/09/01/元编程-1/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/18/query/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2017/09/01/元编程-1/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -341,13 +341,33 @@
       
 
       
-        <h2 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a>慢查询</h2><ol>
-<li>查询操作可视为一系列子任务组成的任务，优化查询即优化其子任务，避免多余子操作或减少子任务的执行次数或让子任务运行更快</li>
-<li>查询的生命周期： 客户端发起-&gt;服务器-&gt;解析后生成执行计划-&gt;执行-&gt;返回客户端<a id="more"></a>
-<h3 id="base"><a href="#base" class="headerlink" title="base"></a>base</h3></li>
-<li>查询性能低下的最基本原因是访问的数据太多，某些查询可能不可避免地需要筛选大量数据；</li>
-<li>大部分性能低下的查询都可以通过减少访问数据量的方式优化<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- 确认应用程序是否在检索大量超过需要的数据；</div><div class="line">- 确认MySQL服务器层是否在分析大量超过需要的数据行</div></pre></td></tr></table></figure>
+        <h2 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h2><ol>
+<li>类元编程指在运行时创建或定制类的技巧</li>
+<li>Python中，类是一等对象，因此任何时候都可以使用函数新建类，而无需使用class关键字</li>
+<li>类装饰器也是函数，不过能审查、修改，甚至把被装饰的类替换成其他类</li>
+<li>元类是类元编程最高级的工具: 使用元类可以创建具有某种特质的全新类种，例如我们见过的抽象基类</li>
+<li>元类功能强大但更难掌握，类装饰器能使用更简单的方式解决很多问题<a id="more"></a>
 </li>
+</ol>
+<h2 id="类工厂函数"><a href="#类工厂函数" class="headerlink" title="类工厂函数"></a>类工厂函数</h2><ol>
+<li><p>type通常被视作函数使用，实则是一个类，传入三个参数可以新建一个类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">type(cls_name, bases, params_dict)</div></pre></td></tr></table></figure>
+</li>
+<li><p>object是type的实例，type是object的子类</p>
+</li>
+<li>Python中做元编程时，应避免使用<code>exec</code>、<code>eval</code>函数以防止不可信参数来源导致的安全风险</li>
+</ol>
+<h2 id="定制描述符的类装饰器"><a href="#定制描述符的类装饰器" class="headerlink" title="定制描述符的类装饰器"></a>定制描述符的类装饰器</h2><ol>
+<li>类装饰器能以较简单的方式做到以前需要使用元类去做的事 情——创建类时定制类</li>
+<li>类装饰器的缺点是，只对直接依附的类有效，即被装饰的类的子类可能继承也可能不继承装饰器所做的改动，具体视改动的方式而定<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">def entity(cls):</div><div class="line">    for key, attr in cls.__dict__.items():</div><div class="line">        if isinstance(attr, Validated):</div><div class="line">            type_name = type(attr).__name__</div><div class="line">            attr.storage_name = attr.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(type_name, key)</div><div class="line">    return cls</div><div class="line"></div><div class="line"></div><div class="line">@entity</div><div class="line">class LineItem:</div><div class="line">    description = model.NonBlank()</div><div class="line">    weight = model.Quantity()</div><div class="line">    price = model.Quantity()</div><div class="line"></div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="导入时-Vs-运行时"><a href="#导入时-Vs-运行时" class="headerlink" title="导入时 Vs 运行时"></a>导入时 Vs 运行时</h2><ol>
+<li>导入时，解释器会从上到下一次性解析完.py模块的源码，然后生成用于执行的字节码，若句法有错误，在此时报告，如果本地的<code>__pycache__</code>文件夹中有最新的.pyc文件，解释器会跳过上述步骤</li>
+<li>编译是导入时的活动，同时会做些其它动作，如import语句，不只是声明，在进程中首次导入模块时，还会运行所导入模块中的全部顶层代码–以后导入相同模块则使用缓存，只做名称绑定。而顶层代码可以做任何事，包括通常在“运行时”做的事。因此，“导入时”和“运行时”之间的界限是模糊的: import语句可以触发任何“运行时行为”</li>
+<li>导入模块时，解释器会执行顶层的def语句，解释器会编译函数的定义体(首次导入模块时)，把函数对象绑定倒影的全局名称上，但解释器不会执行函数的定义体。即，导入时定义顶层函数，运行时调用函数时执行函数的定义体</li>
+<li>类与函数情况不同，导入时，解释器会执行每个类的定义体，甚至会执行嵌套类的定义体。产生结果是：定义了类的属性和方法，并构建了类对象</li>
+<li>要定制整个类层次结构，而不是一次定制一个类，元类会更高效</li>
 </ol>
 
       
@@ -378,9 +398,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+            <a href="/tags/Fluent-Python/" rel="tag"># Fluent Python</a>
           
-            <a href="/tags/查询优化/" rel="tag"># 查询优化</a>
+            <a href="/tags/metaclass/" rel="tag"># metaclass</a>
           
         </div>
       
@@ -393,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/14/closure/" rel="next" title="closure & decorator">
-                <i class="fa fa-chevron-left"></i> closure & decorator
+              <a href="/2017/08/28/描述符/" rel="next" title="描述符">
+                <i class="fa fa-chevron-left"></i> 描述符
               </a>
             
           </div>
@@ -402,10 +422,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/19/mysql/" rel="prev" title="MySQL-Base">
-                MySQL-Base <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -532,7 +548,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#慢查询"><span class="nav-number">1.</span> <span class="nav-text">慢查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#base"><span class="nav-number">1.1.</span> <span class="nav-text">base</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#abstract"><span class="nav-number">1.</span> <span class="nav-text">abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类工厂函数"><span class="nav-number">2.</span> <span class="nav-text">类工厂函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制描述符的类装饰器"><span class="nav-number">3.</span> <span class="nav-text">定制描述符的类装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入时-Vs-运行时"><span class="nav-number">4.</span> <span class="nav-text">导入时 Vs 运行时</span></a></li></ol></div>
             
 
           </div>
@@ -682,9 +698,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://lihz1992.github.io/2017/07/18/query/';
-          this.page.identifier = '2017/07/18/query/';
-          this.page.title = 'MySQL-查询优化';
+          this.page.url = 'http://lihz1992.github.io/2017/09/01/元编程-1/';
+          this.page.identifier = '2017/09/01/元编程-1/';
+          this.page.title = 'Fluent Python 类元编程';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://lihz1992-github-io.disqus.com/embed.js';
