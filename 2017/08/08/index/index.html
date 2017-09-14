@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/08/index/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="摘要 索引是存储引擎用于快速找到记录的一种数据结构 查询性能优化的做有效手段，即是优化索引及其策略 索引可以包含一个或多个列的值">
-<meta property="og:updated_time" content="2017-09-14T03:21:05.000Z">
+<meta property="og:updated_time" content="2017-09-14T06:07:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 索引">
 <meta name="twitter:description" content="摘要 索引是存储引擎用于快速找到记录的一种数据结构 查询性能优化的做有效手段，即是优化索引及其策略 索引可以包含一个或多个列的值">
@@ -352,7 +352,10 @@
 <p>B-Tree索引使用B-Tree数据结构来存储数据(InnoDB使用的是B+Tree，每个叶子节点都包含指向下一个叶子节点的指针，从而方便叶子节点范围的遍历）<br>不同存储引擎以不同的方式使用B-Tree索引，性能也各不相同：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1. MyISAM使用前缀压缩技术使得索引更小</div><div class="line">2. InnoDB按照原数据格式进行压缩</div><div class="line">3. MyISAM索引通过数据的物理位置引用被索引的行</div><div class="line">4. InnoDB根据主键引用被索引的行</div></pre></td></tr></table></figure></p>
 <p>B-Tree通常意味着所有的值都是按顺序存储的，并且每一个叶子页到根的距离相同<br>B-Tree索引能够加快访问数据的速度，因为存储引擎不再需要全表扫描获取需要的数据，取而代之的是从索引的根节点开始进行搜索。根节点的槽中存放了指向子节点的指针，存储引擎根据这些指针向下层查找，通过比较节点页的值和要查找的值可以找到合适的指针进入下层子节点，这些指针实际上定义了子节点页中值的上限和下限。叶子节点比较特别，它们的指针指向的是被索引的数据，而非其他节点页<br>B-Tree对索引列是顺序组织存储的，所以很适合查找范围数据。<br>B-Tree索引适用于全键值、键值范围或键前缀查找，其中键前缀查找只适用于最左前缀的查找：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1. 全值匹配</div><div class="line">2. 匹配最左前缀</div><div class="line">3. 匹配列前缀</div><div class="line">4. 匹配范围值</div><div class="line">5. 精确匹配某一列并范围匹配另外一列</div><div class="line">6. 只访问索引的查询</div></pre></td></tr></table></figure></p>
 <p>B-Tree索引的限制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 如果不是按照索引的最左列开始查找，则无法使用索引</div><div class="line">2. 不能跳过索引中的列(无法查找last_name是smith且dob是某个特定出生日期的人，不指定first_name，MySQL只能使用索引的第一列))</div><div class="line">3. 如果查询有某个列的范围查询，则其右边所有列都无法使用索引优化查询(如查询条件: WHERE last_name=&apos;Smith&apos; AND first_name LIKE &apos;J%&apos; AND dob = &apos;1976-12-23&apos;,这个查询只能使用索引的前两列，因为LIKE是个范围条件，若范围查询列值数量有限，可以通过使用多个等于条件代替范围条件)</div></pre></td></tr></table></figure></p>
-<h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><h3 id="三星原则"><a href="#三星原则" class="headerlink" title="三星原则"></a>三星原则</h3><ol>
+<h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><ol>
+<li>减少服务器需要扫描的数据量</li>
+<li>帮助服务器避免排序和临时表</li>
+<li>将随机IO变成顺序IO<h3 id="三星原则"><a href="#三星原则" class="headerlink" title="三星原则"></a>三星原则</h3></li>
 <li>索引将相关的记录放到一起</li>
 <li>索引中的数据顺序和查找中的排列顺序一致</li>
 <li>索引中包含了查询中需要的全部列</li>
@@ -367,7 +370,7 @@
 <li>对于很长的字符列，通常可以索引开始的部分字符，以节约索引空间，提高索引效率，带来的问题则是会降低索引的选择性</li>
 <li>索引的选择性指的是，不重复的索引值(基数)和数据表的记录总数的比值，索引的选择性越高查询效率越高</li>
 </ol>
-<h4 id="前缀索引策略"><a href="#前缀索引策略" class="headerlink" title="前缀索引策略"></a>前缀索引策略</h4><p>应当选择足够长的前缀以保证较高的选择性(选择性趋近于索引整个列)，即基数接近完整列的基数</p>
+<h3 id="前缀索引策略"><a href="#前缀索引策略" class="headerlink" title="前缀索引策略"></a>前缀索引策略</h3><p>应当选择足够长的前缀以保证较高的选择性(选择性趋近于索引整个列)，即基数接近完整列的基数</p>
 <ol>
 <li>方法1：<ul>
 <li>找出最常见值列表<code>SELECT COUNT(*) AS cnt, column from database.table GROUP BY cnt DESC LIMIT 10;</code></li>
@@ -387,6 +390,23 @@ FROM database.table;</code></li>
 <li>创建前缀索引<code>ALTER TABLE database.table ADD KEY (column(n))</code>n值为前缀位数</li>
 <li>前缀索引用于长字符列，使得索引更小、更快，缺点是MySQL无法使用前缀索引做<code>ORDER BY</code>和<code>GROUP BY</code>，也无法使用前缀索引做覆盖扫描</li>
 </ol>
+<h3 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h3><p>在多个列上建立独立的索引大部分情况下并不能提高MySQL的查询性能。</p>
+<h4 id="索引合并策略"><a href="#索引合并策略" class="headerlink" title="索引合并策略"></a>索引合并策略</h4><p>MySQL5.0以上版本，查询能够同时使用多个单列索引进行扫描，并将结果进行合并: OR条件的联合，AND条件的相交，组合前两种情况的联合及相交<br>索引合并策略有时候是一种优化的结果，实际上更多时候说明了表上索引建得很糟糕：</p>
+<ol>
+<li>当出现服务器对多个索引做相交操作时(多个AND条件)，通常意味着需要一个包含所有相关列的多列索引而不是多个独立的单列索引</li>
+<li>对多个索引做联合操作时(通常多个OR条件)，通常需要耗费大量CPU和内存资源在算法的缓存、排序、合并操作上</li>
+<li>优化器不会把这些计算到”查询成本”，优化器只关心随机页面的读取。这会使得查询的成本被低估，导致该执行计划还不如直接走全表扫描，不仅消耗更多的CPU和内存资源，还可能影响查询的并发性</li>
+</ol>
+<p>当在EXPLAIN中看到有索引合并，应该检查下查询和表的结构，看是否已经是最优。也可以通过参数optimizer_switch关闭索引合并功能或IGNORE INDEX提示让优化器忽略掉某些索引</p>
+<h3 id="选择合适的索引列顺序"><a href="#选择合适的索引列顺序" class="headerlink" title="选择合适的索引列顺序"></a>选择合适的索引列顺序</h3><ol>
+<li>正确的索引列顺序依赖于使用该索引的查询</li>
+<li>同时需要考虑如何更好地满足排序和分组的需要</li>
+<li>在一个多列B-Tree索引中，索引列的顺序意味着索引首先按照最左列进行排序，其次是第二列，因此索引可以按照升序或者降序进行扫描，以满足精确符合列顺序的ORDER BY、GROUP BY和DISTINCT等子句的查询需求</li>
+</ol>
+<h4 id="经验法则"><a href="#经验法则" class="headerlink" title="经验法则"></a>经验法则</h4><ol>
+<li>将选择性最高的列放到索引最前列</li>
+</ol>
+<h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><p>聚簇索引并不是单独的一种索引类型，而是一种数据存储方式。具体细节依赖于实现方式，InnoDB中的聚簇索引实际上在同一个结构中保存了B-Tree索引和数据行</p>
 
       
     </div>
@@ -570,7 +590,7 @@ FROM database.table;</code></li>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的类型"><span class="nav-number">2.</span> <span class="nav-text">索引的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#B-Tree索引"><span class="nav-number">2.1.</span> <span class="nav-text">B-Tree索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的优点"><span class="nav-number">3.</span> <span class="nav-text">索引的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三星原则"><span class="nav-number">3.1.</span> <span class="nav-text">三星原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引是否是最好的解决方案"><span class="nav-number">3.2.</span> <span class="nav-text">索引是否是最好的解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能的索引策略"><span class="nav-number">4.</span> <span class="nav-text">高性能的索引策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独立的列"><span class="nav-number">4.1.</span> <span class="nav-text">独立的列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀索引和索引选择性"><span class="nav-number">4.2.</span> <span class="nav-text">前缀索引和索引选择性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前缀索引策略"><span class="nav-number">4.2.1.</span> <span class="nav-text">前缀索引策略</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的类型"><span class="nav-number">2.</span> <span class="nav-text">索引的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#B-Tree索引"><span class="nav-number">2.1.</span> <span class="nav-text">B-Tree索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的优点"><span class="nav-number">3.</span> <span class="nav-text">索引的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三星原则"><span class="nav-number">3.1.</span> <span class="nav-text">三星原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引是否是最好的解决方案"><span class="nav-number">3.2.</span> <span class="nav-text">索引是否是最好的解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能的索引策略"><span class="nav-number">4.</span> <span class="nav-text">高性能的索引策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独立的列"><span class="nav-number">4.1.</span> <span class="nav-text">独立的列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀索引和索引选择性"><span class="nav-number">4.2.</span> <span class="nav-text">前缀索引和索引选择性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀索引策略"><span class="nav-number">4.3.</span> <span class="nav-text">前缀索引策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多列索引"><span class="nav-number">4.4.</span> <span class="nav-text">多列索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引合并策略"><span class="nav-number">4.4.1.</span> <span class="nav-text">索引合并策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择合适的索引列顺序"><span class="nav-number">4.5.</span> <span class="nav-text">选择合适的索引列顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#经验法则"><span class="nav-number">4.5.1.</span> <span class="nav-text">经验法则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚簇索引"><span class="nav-number">4.6.</span> <span class="nav-text">聚簇索引</span></a></li></ol></li></ol></div>
             
 
           </div>
