@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/08/index/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="摘要 索引是存储引擎用于快速找到记录的一种数据结构 查询性能优化的做有效手段，即是优化索引及其策略 索引可以包含一个或多个列的值">
-<meta property="og:updated_time" content="2017-09-14T06:07:23.000Z">
+<meta property="og:updated_time" content="2017-09-18T06:20:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 索引">
 <meta name="twitter:description" content="摘要 索引是存储引擎用于快速找到记录的一种数据结构 查询性能优化的做有效手段，即是优化索引及其策略 索引可以包含一个或多个列的值">
@@ -390,7 +390,7 @@ FROM database.table;</code></li>
 <li>创建前缀索引<code>ALTER TABLE database.table ADD KEY (column(n))</code>n值为前缀位数</li>
 <li>前缀索引用于长字符列，使得索引更小、更快，缺点是MySQL无法使用前缀索引做<code>ORDER BY</code>和<code>GROUP BY</code>，也无法使用前缀索引做覆盖扫描</li>
 </ol>
-<h3 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h3><p>在多个列上建立独立的索引大部分情况下并不能提高MySQL的查询性能。</p>
+<h3 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h3><p>在多个列上建立独立的索引大部分情况下并不能提高MySQL的查询性能</p>
 <h4 id="索引合并策略"><a href="#索引合并策略" class="headerlink" title="索引合并策略"></a>索引合并策略</h4><p>MySQL5.0以上版本，查询能够同时使用多个单列索引进行扫描，并将结果进行合并: OR条件的联合，AND条件的相交，组合前两种情况的联合及相交<br>索引合并策略有时候是一种优化的结果，实际上更多时候说明了表上索引建得很糟糕：</p>
 <ol>
 <li>当出现服务器对多个索引做相交操作时(多个AND条件)，通常意味着需要一个包含所有相关列的多列索引而不是多个独立的单列索引</li>
@@ -406,7 +406,77 @@ FROM database.table;</code></li>
 <h4 id="经验法则"><a href="#经验法则" class="headerlink" title="经验法则"></a>经验法则</h4><ol>
 <li>将选择性最高的列放到索引最前列</li>
 </ol>
-<h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><p>聚簇索引并不是单独的一种索引类型，而是一种数据存储方式。具体细节依赖于实现方式，InnoDB中的聚簇索引实际上在同一个结构中保存了B-Tree索引和数据行</p>
+<h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><ol>
+<li>聚簇索引并不是单独的一种索引类型，而是一种数据存储方式。具体细节依赖于实现方式，InnoDB中的聚簇索引实际上在同一个结构中保存了B-Tree索引和数据行</li>
+<li>当表有聚簇索引时，它的数据行实际存放在索引的叶子页。术语“聚簇”表示数据行和相邻的健值紧凑地存储在一起</li>
+<li>无法同时把数据行存放在两个不同的地方，因此一个表只能有一个聚簇索引(覆盖索引可以模拟多个聚簇索引的情况)</li>
+<li>聚簇主键可能对性能有帮助，也可能导致严重的性能问题</li>
+</ol>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>把相关数据保存在一起，如电子邮箱，根据用户ID聚集数据，只需要磁盘读取少数数据页就能获取某用户全部邮件</li>
+<li>数据访问更快，聚簇索引将索引和数据保存在同一个B-Tree中，因此从聚簇索引中获取数据通常比在非聚簇索引中查找要快</li>
+<li>使用覆盖索引扫描的查询可以直接使用页节点中的主键值</li>
+</ol>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>聚簇数据最大限度地提高了I/O密集型应用的性能，但如果数据全部放在内存找那个，则访问顺序就没那么重要了，聚簇索引也没什么优势</li>
+<li>插入速度严重依赖插入顺序。按照主键的顺序插入式加载数据到InnoDB表中速度最快的方式。如果不是按照主键顺序加载数据，在加载完成后最好使用OPTIMIZE TABLE命令重新组织下表</li>
+<li>更新聚簇索引列的代价很高，因为会强制InnoDB将每个被更新的行移动到新的位置</li>
+<li>基于聚簇索引的表在插入新行，或者主键被更新导致需要移动行的时候，可能面临“页分裂”的问题。当行的主键值要求必须将这一行插入到某个已满的页中时，存储引擎会将该页分裂成两个页面来容纳该行。页分裂会导致表占用更多的磁盘空间</li>
+<li>聚簇索引可能导致全表扫描变慢，尤其是行比较稀疏，或者由于页分裂导致数据存储不连续时</li>
+<li>二级索引(非聚簇索引)可能比想象要更大，因为二级索引的叶子节点包含了引用行的主键列</li>
+<li>二级索引访问需要两次索引查找(二级索引叶子节点保存的”行指针”不是指向行物理位置的指针，而是行的主键值)</li>
+</ol>
+<h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><ol>
+<li>InnoDB通过主键聚集数据，未定义主键的情况下，InnoDB会选择一个唯一的非空索引替代，若没这样的索引，则隐式定义一个主键作为聚簇索引</li>
+<li>InnoDB只聚集在同一个页面中的记录。包含相邻健值的页面可能会相距甚远</li>
+</ol>
+<h4 id="InnoDB与MyISAM数据分布对比"><a href="#InnoDB与MyISAM数据分布对比" class="headerlink" title="InnoDB与MyISAM数据分布对比"></a>InnoDB与MyISAM数据分布对比</h4><p>聚簇索引和非聚簇索引的数据分布有区别,以及对应的主键索引和二级索引的数据分布也有区别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE layout_test (</div><div class="line">    col1 int NOT NULL,</div><div class="line">    col2 int NOT NULL,</div><div class="line">    PRIMARY KEY(col1),</div><div class="line">    KEY(col2)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>假设该表的主键取值为1-10000，按照随机顺序插入并使用OPTIMIZE TABLE命令做了优化。使得数据在磁盘上的存储方式最优，行的顺序随机。列col2的值在1-100间随机赋值，有大量重复的值</p>
+<h5 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h5><ol>
+<li>MyISAM的数据分布很简单，按照数据插入的顺序存储在磁盘上</li>
+<li>因为行是定长，所以MyISAM可以从表的开头跳过所需字节找到需要的行</li>
+<li>MyISAM中主键索引和其它索引的结构上没有什么不同，主键索引就是一个名为PRIMARY的唯一非空索引</li>
+</ol>
+<h5 id="InnoDB-1"><a href="#InnoDB-1" class="headerlink" title="InnoDB"></a>InnoDB</h5><ol>
+<li>InnoDB支持聚簇索引，所以使用非常不同的方式存储同样的数据</li>
+<li>在InnoDB中，聚簇索引”就是”表，所以不需要像MyISAM那样独立的行存储</li>
+<li>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及所有的剩余列。如果主键是个列前缀索引，InnoDB也会包含完整的主键列和剩下的其它列</li>
+<li>与MyISAM不同的一点是，InnoDB的二级索引和聚簇索引不同。InnoDB二级索引的叶子节点中存储的不是”行指针”，而是主键值。这样的策略减少了当出现行移动或者数据页分裂时二级索引的维护工作。使用主键值当作指针会让二级索引占用更多的空间，换来的好处是，InnoDB在移动时无需更新二级索引中的这个指针</li>
+</ol>
+<h4 id="InnoDB表中按主键顺序插入行"><a href="#InnoDB表中按主键顺序插入行" class="headerlink" title="InnoDB表中按主键顺序插入行"></a>InnoDB表中按主键顺序插入行</h4><ol>
+<li>若正在使用InnoDB表并且没什么数据需要聚集，那么可以定义一个代理键作为主键，这种主键的数据应该和应用无关，最简单的方法时使用AUTO_INCREMENT自增列。这样可以保证数据行是按顺序写入，对于根据主键做关联操作的性能也会更好</li>
+<li>最好避免随机的(不连续且值的分布范围非常大)聚簇索引，特别是I/O密集型的应用。如，从性能角度考虑，使用UUID来作为聚簇索引会很糟糕:它使得聚簇索引的插入变得完全随机，这是最坏情况，使得数据没有任何聚集特性</li>
+</ol>
+<h5 id="使用uuid作为主键聚簇索引的缺点"><a href="#使用uuid作为主键聚簇索引的缺点" class="headerlink" title="使用uuid作为主键聚簇索引的缺点"></a>使用uuid作为主键聚簇索引的缺点</h5><ol>
+<li>写入的目标页可能已经刷到磁盘上并从缓存中移除，或者是还没有被加载到缓存中，InnoDB在插入前不得不先找到并从磁盘读取目标页到内存中。这将导致大量的随机I/O</li>
+<li>因为写入是乱序的，InnoDB不得不频繁地做页分裂操作，以便为新的行分配空间，页分裂会导致移动大量数据，一次插入最少需要修改三个页而不是一个页</li>
+<li>由于频繁的页分裂，页会变得稀疏并被不规则的填充，所以最终数据会有碎片</li>
+<li>把这些随机值载入到聚簇索引后，也许需要做一次OPTIMIZE TABLE来重建表并优化页的填充</li>
+</ol>
+<h5 id="顺序自增的主键什么时候造成更坏的结果"><a href="#顺序自增的主键什么时候造成更坏的结果" class="headerlink" title="顺序自增的主键什么时候造成更坏的结果"></a>顺序自增的主键什么时候造成更坏的结果</h5><ol>
+<li>对于高并发负载，在InnoDB中按主键顺序插入可能会造成明细的争用</li>
+<li>主键的上界会成为”热点”，因为所有插入都发生在这里，所以并发插入可能导致间隙锁竞争</li>
+<li>另一个热点可能是AUTO_INCREMENT锁机制，如果遇到这个问题，可能需要考虑重新设计表或者应用，或者更改innodb_autoinc_lock_mode配置</li>
+</ol>
+<h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><ol>
+<li>通常会根据查询的WHERE条件来创建合适的索引，不过这只是索引优化的一个方面。设计优秀的索引应该考虑到整个查询，而不单单是WHERE条件部分</li>
+<li>索引是一种查找数据的高效方式，但是MySQL也可以使用索引来直接获取列的数据，这样就不再需要读取数据行。即，索引的叶子节点中已经包含要查询的数据，那么便没必要再回表查询行了</li>
+<li>如果一个索引包含(或者说覆盖)所有需要查询的字段的值，称之为覆盖索引</li>
+<li>在以下场景中，索引中满足查询的成本一般比查询行小得多<ul>
+<li>索引条目远小于数据行大小，如果只需要读取索引，那MySQL就会极大地减少数据访问量。这对缓存的负载非常重要，因为这种情况下响应时间大部分花费在数据拷贝上。覆盖索引对于I/O密集型的应用的帮助：索引比数据更小，更容易全部放入内存中</li>
+<li>索引是按照列值顺序存储的(至少在单个页内如此)，所以对I/O密集型的范围查询会比随机从磁盘读取每一行的数据的I/O要少得多</li>
+<li>一些存储引擎如MyISAM在内存中只缓存索引，数据则依赖于操作系统来缓存，因此要访问数据需要一次系统调用。这可能会导致严重的性能问题，尤其是那些系统调用占了数据访问中的最大开销的场景</li>
+<li>由于InnoDB的聚簇索引，覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询</li>
+</ul>
+</li>
+<li>覆盖索引必须要存储索隐列的值，而哈希索引、空间索引和全文索引都不存储索隐列的值，所以MySQL只能使用B-Tree索引做覆盖索引</li>
+<li>当发起一个被索引覆盖的查询(也叫做索引覆盖查询)时，在EXPLAIN的Extra列可以看到”Using index”信息</li>
+<li>索引覆盖查询还有很多陷阱可能会导致无法实现优化，MySQL查询优化器会在执行查询前判断是否有一个索引能进行覆盖。假设索引覆盖了WHERE条件中的字段，但不是整个查询涉及的字段，判断条件为假，MySQL5.5和更早的版本也总是会回表获取数据行<ul>
+<li><code>EXPLAIN SELECT * FROM products WHERE actor=&#39;SEAN CARREY&#39; AND title like &#39;%APOLLO%&#39;\G</code> 以该查询为例，索引无法覆盖查询的原因如下:</li>
+<li>没有任何索引能覆盖这个查询。查询从表中选择了所有的列，而没有任何索引覆盖了所有的列。不过，理论上MySQL还有一个捷径可以利用：WHERE条件中的列是有索引可以覆盖的，因此MySQL可以使用索引找到对应的actor并检查title是否匹配，过滤之后再读取需要的数据行<br>-</li>
+</ul>
+</li>
+</ol>
 
       
     </div>
@@ -542,7 +612,7 @@ FROM database.table;</code></li>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -590,7 +660,7 @@ FROM database.table;</code></li>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的类型"><span class="nav-number">2.</span> <span class="nav-text">索引的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#B-Tree索引"><span class="nav-number">2.1.</span> <span class="nav-text">B-Tree索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的优点"><span class="nav-number">3.</span> <span class="nav-text">索引的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三星原则"><span class="nav-number">3.1.</span> <span class="nav-text">三星原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引是否是最好的解决方案"><span class="nav-number">3.2.</span> <span class="nav-text">索引是否是最好的解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能的索引策略"><span class="nav-number">4.</span> <span class="nav-text">高性能的索引策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独立的列"><span class="nav-number">4.1.</span> <span class="nav-text">独立的列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀索引和索引选择性"><span class="nav-number">4.2.</span> <span class="nav-text">前缀索引和索引选择性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀索引策略"><span class="nav-number">4.3.</span> <span class="nav-text">前缀索引策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多列索引"><span class="nav-number">4.4.</span> <span class="nav-text">多列索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引合并策略"><span class="nav-number">4.4.1.</span> <span class="nav-text">索引合并策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择合适的索引列顺序"><span class="nav-number">4.5.</span> <span class="nav-text">选择合适的索引列顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#经验法则"><span class="nav-number">4.5.1.</span> <span class="nav-text">经验法则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚簇索引"><span class="nav-number">4.6.</span> <span class="nav-text">聚簇索引</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的类型"><span class="nav-number">2.</span> <span class="nav-text">索引的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#B-Tree索引"><span class="nav-number">2.1.</span> <span class="nav-text">B-Tree索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引的优点"><span class="nav-number">3.</span> <span class="nav-text">索引的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三星原则"><span class="nav-number">3.1.</span> <span class="nav-text">三星原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引是否是最好的解决方案"><span class="nav-number">3.2.</span> <span class="nav-text">索引是否是最好的解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能的索引策略"><span class="nav-number">4.</span> <span class="nav-text">高性能的索引策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独立的列"><span class="nav-number">4.1.</span> <span class="nav-text">独立的列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀索引和索引选择性"><span class="nav-number">4.2.</span> <span class="nav-text">前缀索引和索引选择性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀索引策略"><span class="nav-number">4.3.</span> <span class="nav-text">前缀索引策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多列索引"><span class="nav-number">4.4.</span> <span class="nav-text">多列索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引合并策略"><span class="nav-number">4.4.1.</span> <span class="nav-text">索引合并策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择合适的索引列顺序"><span class="nav-number">4.5.</span> <span class="nav-text">选择合适的索引列顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#经验法则"><span class="nav-number">4.5.1.</span> <span class="nav-text">经验法则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚簇索引"><span class="nav-number">4.6.</span> <span class="nav-text">聚簇索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优点"><span class="nav-number">4.6.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">4.6.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB"><span class="nav-number">4.6.3.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB与MyISAM数据分布对比"><span class="nav-number">4.6.4.</span> <span class="nav-text">InnoDB与MyISAM数据分布对比</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MyISAM"><span class="nav-number">4.6.4.1.</span> <span class="nav-text">MyISAM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#InnoDB-1"><span class="nav-number">4.6.4.2.</span> <span class="nav-text">InnoDB</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB表中按主键顺序插入行"><span class="nav-number">4.6.5.</span> <span class="nav-text">InnoDB表中按主键顺序插入行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用uuid作为主键聚簇索引的缺点"><span class="nav-number">4.6.5.1.</span> <span class="nav-text">使用uuid作为主键聚簇索引的缺点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#顺序自增的主键什么时候造成更坏的结果"><span class="nav-number">4.6.5.2.</span> <span class="nav-text">顺序自增的主键什么时候造成更坏的结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#覆盖索引"><span class="nav-number">4.7.</span> <span class="nav-text">覆盖索引</span></a></li></ol></li></ol></div>
             
 
           </div>
