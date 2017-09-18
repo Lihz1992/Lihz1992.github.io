@@ -285,7 +285,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/18/ssl/" itemprop="url">ssl</a></h1>
+                <a class="post-title-link" href="/2017/09/18/ssl/" itemprop="url">SSL/TLS</a></h1>
         
 
         <div class="post-meta">
@@ -344,9 +344,29 @@
 
       
         
-          
-            
-          
+          <h2 id="SSL-TLS概览"><a href="#SSL-TLS概览" class="headerlink" title="SSL/TLS概览"></a>SSL/TLS概览</h2><ol>
+<li>SSL:(Secure Socket Layer,安全套接字层)，利用数据加密技术，确保数据在网络上传输过程中不会被截取。当前版本3.0，被广泛的用于Web浏览器与服务器之间的身份认证和加密数据传输。<ul>
+<li>SSL协议位于TCP/IP协议与各种应用层协议之间，为数据通讯提供安全支持</li>
+<li>SSL协议可分为两层。SSL记录协议(SSL Record Protocol)：建立在可靠的传输协议(如TCP)之上，为高层协议提供数据封装、压缩、加密等基本功能的支持</li>
+<li>SSL握手协议(SSL Handshake Protocol):建立在SSL记录协议之上，用于实际的数据传输凯施前，通讯双方进行身份验证、协商加密算法、交换加密密钥等</li>
+</ul>
+</li>
+<li>TLS:(Transport Layer Security, 传输层安全协议)，用于两个应用程序之间提供保密性和数据完整性<ul>
+<li>TLS1.0是IEFT制定的一种新协议，建立在SSL3.0协议规范之上，可以理解为SSL 3.1</li>
+<li>该协议由两层组成：TLS记录协议和TLS握手协议</li>
+</ul>
+</li>
+<li>SSL/TLS提供的服务主要有：<ul>
+<li>认证用户和服务器，确保数据发送到正确的客户机和服务器</li>
+<li>加密数据以防止数据中途被窃取</li>
+<li>维护数据的完整性，确保数据在传输过程中不被改变
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/18/ssl/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1635,7 +1655,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
