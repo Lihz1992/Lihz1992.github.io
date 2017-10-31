@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/08/index/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="摘要 索引是存储引擎用于快速找到记录的一种数据结构 查询性能优化的做有效手段，即是优化索引及其策略 索引可以包含一个或多个列的值">
-<meta property="og:updated_time" content="2017-09-20T09:09:05.000Z">
+<meta property="og:updated_time" content="2017-09-28T14:14:35.596Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 索引">
 <meta name="twitter:description" content="摘要 索引是存储引擎用于快速找到记录的一种数据结构 查询性能优化的做有效手段，即是优化索引及其策略 索引可以包含一个或多个列的值">
@@ -485,7 +485,9 @@ FROM database.table;</code></li>
 <li>大多数存储引擎中，覆盖索引只能覆盖那些只访问索引中部分列的查询。不过可以更进一步优化InnoDB。InnoDB的二级索引的叶子节点都包含了主键的值，意味着InnoDB的二级索引可以有效地利用这些额外的主键列来覆盖查询</li>
 </ol>
 <h3 id="使用索引扫描做排序"><a href="#使用索引扫描做排序" class="headerlink" title="使用索引扫描做排序"></a>使用索引扫描做排序</h3><p>MySQL有两种方式可以生成有序的结果:通过排序操作，或者按索引顺序扫描。如果EXPLAIN出来的type列的值为”index”，则说明MySQL使用了索引扫描来做排序</p>
-<h3 id="索引和锁"><a href="#索引和锁" class="headerlink" title="索引和锁"></a>索引和锁</h3><p>索引可以让查询锁定更少的行，如果你的查询从不访问那些不需要的行，就会锁定更少的行</p>
+<h3 id="索引和锁"><a href="#索引和锁" class="headerlink" title="索引和锁"></a>索引和锁</h3><p>索引可以让查询锁定更少的行，如果你的查询从不访问那些不需要的行，就会锁定更少的行。虽然InnoDB的行锁效率很高，内存使用也很少，但行锁定依然会带来额外开销，其次，锁定超过需要的行会增加锁争用并减少并发性</p>
+<p>InnoDB只有在访问行的时候才会对其加锁。当索引能够过滤掉无效的行，即InnoDB在存储引擎层能够过滤掉所有不需要的行时，将有效减少InnoDB访问的行数，从而减少锁的数量；反之，InnoDB检索到数据并返回给服务器层以后，MySQL服务器才能应用WHERE子句，此时已经无法避免行锁定</p>
+<p>InnoDB在二级索引上使用共享锁，但访问主键索引需要排它锁。这消除了使用覆盖索引的可能性，并且<code>SELECT FOR UPDATE</code>比<code>LOCK IN SHARE MODE</code>或非锁定查询慢很多</p>
 
       
     </div>
@@ -621,7 +623,7 @@ FROM database.table;</code></li>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -634,7 +636,7 @@ FROM database.table;</code></li>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
