@@ -100,6 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/08/08/index/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="摘要 索引是存储引擎用于快速找到记录的一种数据结构 查询性能优化的做有效手段，即是优化索引及其策略 索引可以包含一个或多个列的值">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-09-28T14:14:35.597Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL 索引">
@@ -348,10 +349,10 @@
 </li>
 </ol>
 <h2 id="索引的类型"><a href="#索引的类型" class="headerlink" title="索引的类型"></a>索引的类型</h2><p>MySQL中，索引是在存储引擎层而不是服务器层实现，不同存储引擎的索引工作方式不同，也非所有存储引擎都支持所有类型的索引</p>
-<h3 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE People (</div><div class="line">  last_name  varchar(50) not null,</div><div class="line">  first_name varchar(50) not null,</div><div class="line">  dob        date        not null,</div><div class="line">  gender     enum(&apos;m&apos;, &apos;f&apos;) not null,</div><div class="line">  key(last_name, first_name, dob)</div><div class="line">  );</div></pre></td></tr></table></figure>
-<p>B-Tree索引使用B-Tree数据结构来存储数据(InnoDB使用的是B+Tree，每个叶子节点都包含指向下一个叶子节点的指针，从而方便叶子节点范围的遍历）<br>不同存储引擎以不同的方式使用B-Tree索引，性能也各不相同：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1. MyISAM使用前缀压缩技术使得索引更小</div><div class="line">2. InnoDB按照原数据格式进行压缩</div><div class="line">3. MyISAM索引通过数据的物理位置引用被索引的行</div><div class="line">4. InnoDB根据主键引用被索引的行</div></pre></td></tr></table></figure></p>
-<p>B-Tree通常意味着所有的值都是按顺序存储的，并且每一个叶子页到根的距离相同<br>B-Tree索引能够加快访问数据的速度，因为存储引擎不再需要全表扫描获取需要的数据，取而代之的是从索引的根节点开始进行搜索。根节点的槽中存放了指向子节点的指针，存储引擎根据这些指针向下层查找，通过比较节点页的值和要查找的值可以找到合适的指针进入下层子节点，这些指针实际上定义了子节点页中值的上限和下限。叶子节点比较特别，它们的指针指向的是被索引的数据，而非其他节点页<br>B-Tree对索引列是顺序组织存储的，所以很适合查找范围数据。<br>B-Tree索引适用于全键值、键值范围或键前缀查找，其中键前缀查找只适用于最左前缀的查找：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1. 全值匹配</div><div class="line">2. 匹配最左前缀</div><div class="line">3. 匹配列前缀</div><div class="line">4. 匹配范围值</div><div class="line">5. 精确匹配某一列并范围匹配另外一列</div><div class="line">6. 只访问索引的查询</div></pre></td></tr></table></figure></p>
-<p>B-Tree索引的限制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 如果不是按照索引的最左列开始查找，则无法使用索引</div><div class="line">2. 不能跳过索引中的列(无法查找last_name是smith且dob是某个特定出生日期的人，不指定first_name，MySQL只能使用索引的第一列))</div><div class="line">3. 如果查询有某个列的范围查询，则其右边所有列都无法使用索引优化查询(如查询条件: WHERE last_name=&apos;Smith&apos; AND first_name LIKE &apos;J%&apos; AND dob = &apos;1976-12-23&apos;,这个查询只能使用索引的前两列，因为LIKE是个范围条件，若范围查询列值数量有限，可以通过使用多个等于条件代替范围条件)</div></pre></td></tr></table></figure></p>
+<h3 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE People (</span><br><span class="line">  last_name  varchar(50) not null,</span><br><span class="line">  first_name varchar(50) not null,</span><br><span class="line">  dob        date        not null,</span><br><span class="line">  gender     enum(&apos;m&apos;, &apos;f&apos;) not null,</span><br><span class="line">  key(last_name, first_name, dob)</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+<p>B-Tree索引使用B-Tree数据结构来存储数据(InnoDB使用的是B+Tree，每个叶子节点都包含指向下一个叶子节点的指针，从而方便叶子节点范围的遍历）<br>不同存储引擎以不同的方式使用B-Tree索引，性能也各不相同：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. MyISAM使用前缀压缩技术使得索引更小</span><br><span class="line">2. InnoDB按照原数据格式进行压缩</span><br><span class="line">3. MyISAM索引通过数据的物理位置引用被索引的行</span><br><span class="line">4. InnoDB根据主键引用被索引的行</span><br></pre></td></tr></table></figure></p>
+<p>B-Tree通常意味着所有的值都是按顺序存储的，并且每一个叶子页到根的距离相同<br>B-Tree索引能够加快访问数据的速度，因为存储引擎不再需要全表扫描获取需要的数据，取而代之的是从索引的根节点开始进行搜索。根节点的槽中存放了指向子节点的指针，存储引擎根据这些指针向下层查找，通过比较节点页的值和要查找的值可以找到合适的指针进入下层子节点，这些指针实际上定义了子节点页中值的上限和下限。叶子节点比较特别，它们的指针指向的是被索引的数据，而非其他节点页<br>B-Tree对索引列是顺序组织存储的，所以很适合查找范围数据。<br>B-Tree索引适用于全键值、键值范围或键前缀查找，其中键前缀查找只适用于最左前缀的查找：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 全值匹配</span><br><span class="line">2. 匹配最左前缀</span><br><span class="line">3. 匹配列前缀</span><br><span class="line">4. 匹配范围值</span><br><span class="line">5. 精确匹配某一列并范围匹配另外一列</span><br><span class="line">6. 只访问索引的查询</span><br></pre></td></tr></table></figure></p>
+<p>B-Tree索引的限制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 如果不是按照索引的最左列开始查找，则无法使用索引</span><br><span class="line">2. 不能跳过索引中的列(无法查找last_name是smith且dob是某个特定出生日期的人，不指定first_name，MySQL只能使用索引的第一列))</span><br><span class="line">3. 如果查询有某个列的范围查询，则其右边所有列都无法使用索引优化查询(如查询条件: WHERE last_name=&apos;Smith&apos; AND first_name LIKE &apos;J%&apos; AND dob = &apos;1976-12-23&apos;,这个查询只能使用索引的前两列，因为LIKE是个范围条件，若范围查询列值数量有限，可以通过使用多个等于条件代替范围条件)</span><br></pre></td></tr></table></figure></p>
 <h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><ol>
 <li>减少服务器需要扫描的数据量</li>
 <li>帮助服务器避免排序和临时表</li>
@@ -430,7 +431,7 @@ FROM database.table;</code></li>
 <li>InnoDB通过主键聚集数据，未定义主键的情况下，InnoDB会选择一个唯一的非空索引替代，若没这样的索引，则隐式定义一个主键作为聚簇索引</li>
 <li>InnoDB只聚集在同一个页面中的记录。包含相邻健值的页面可能会相距甚远</li>
 </ol>
-<h4 id="InnoDB与MyISAM数据分布对比"><a href="#InnoDB与MyISAM数据分布对比" class="headerlink" title="InnoDB与MyISAM数据分布对比"></a>InnoDB与MyISAM数据分布对比</h4><p>聚簇索引和非聚簇索引的数据分布有区别,以及对应的主键索引和二级索引的数据分布也有区别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE layout_test (</div><div class="line">    col1 int NOT NULL,</div><div class="line">    col2 int NOT NULL,</div><div class="line">    PRIMARY KEY(col1),</div><div class="line">    KEY(col2)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<h4 id="InnoDB与MyISAM数据分布对比"><a href="#InnoDB与MyISAM数据分布对比" class="headerlink" title="InnoDB与MyISAM数据分布对比"></a>InnoDB与MyISAM数据分布对比</h4><p>聚簇索引和非聚簇索引的数据分布有区别,以及对应的主键索引和二级索引的数据分布也有区别<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE layout_test (</span><br><span class="line">    col1 int NOT NULL,</span><br><span class="line">    col2 int NOT NULL,</span><br><span class="line">    PRIMARY KEY(col1),</span><br><span class="line">    KEY(col2)</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
 <p>假设该表的主键取值为1-10000，按照随机顺序插入并使用OPTIMIZE TABLE命令做了优化。使得数据在磁盘上的存储方式最优，行的顺序随机。列col2的值在1-100间随机赋值，有大量重复的值</p>
 <h5 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h5><ol>
 <li>MyISAM的数据分布很简单，按照数据插入的顺序存储在磁盘上</li>
@@ -476,7 +477,7 @@ FROM database.table;</code></li>
 <li>没有任何索引能覆盖这个查询。查询从表中选择了所有的列，而没有任何索引覆盖了所有的列。不过，理论上MySQL还有一个捷径可以利用：WHERE条件中的列是有索引可以覆盖的，因此MySQL可以使用索引找到对应的actor并检查title是否匹配，过滤之后再读取需要的数据行</li>
 <li>由于底层存储引擎API的限制，MySQL不能在索引中执行LIKE操作，MySQL5.5和更早的版本中只允许在索引中做简单比较操作(例如等于、不等于以及大于)。MySQL能在索引中做最左前缀匹配的LIKE比较，因为该操作可以转换为简单的比较操作，但如果是通配符开头的LIKE查询，存储引擎无法做比较匹配。这种情况下MySQL服务器只能提取数据行的值而不是索引值来做比较</li>
 <li><p>解决该查询的以上两问题，需要重写查询并巧妙的涉及索引。先将索引扩展至覆盖三个数据列(artist, title, prod_id)， 然后按如下方式重写查询:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM products JOIN (SELECT prod_id FROM products WHERE actor=&apos;SEAN CARREY&apos; AND title LIKE &apos;%APOLLO%&apos;) AS t1 ON (t1.prod_id=products.prod_id);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM products JOIN (SELECT prod_id FROM products WHERE actor=&apos;SEAN CARREY&apos; AND title LIKE &apos;%APOLLO%&apos;) AS t1 ON (t1.prod_id=products.prod_id);</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>这种方式称为延迟关联，因为延迟了对列的访问，在查询的第一阶段MySQL可以使用覆盖索引，在FROM子句的子查询中找到匹配的prod_id，然后根据这些prod_id值在外层查询匹配获取需要的所有列值。这样优化的效果取决于WHERE条件匹配返回的行数</p>
 </li>
@@ -532,8 +533,8 @@ FROM database.table;</code></li>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/06/yield/" rel="next" title="Fluent Python 协程">
-                <i class="fa fa-chevron-left"></i> Fluent Python 协程
+              <a href="/2017/08/02/profiling-drf/" rel="next" title="Optimizing Django Rest Framework">
+                <i class="fa fa-chevron-left"></i> Optimizing Django Rest Framework
               </a>
             
           </div>
@@ -623,7 +624,7 @@ FROM database.table;</code></li>
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -636,7 +637,7 @@ FROM database.table;</code></li>
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -694,7 +695,7 @@ FROM database.table;</code></li>
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -843,7 +844,7 @@ FROM database.table;</code></li>
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

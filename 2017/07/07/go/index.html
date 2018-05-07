@@ -100,6 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/07/07/go/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="变量 声明12var 变量名字 类型 = 表达式1. 表达式被省略，零值初始化">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-07-18T02:00:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go">
@@ -342,19 +343,19 @@
 
       
         <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
-<li>声明<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> 变量名字 类型 = 表达式</div><div class="line"><span class="number">1.</span> 表达式被省略，零值初始化</div></pre></td></tr></table></figure>
+<li>声明<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> 变量名字 类型 = 表达式</span><br><span class="line"><span class="number">1.</span> 表达式被省略，零值初始化</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <a id="more"></a>
 <ul>
 <li><p>简短变量声明</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">名字 := 表达式</div><div class="line"><span class="number">1.</span> 变量的类型根据表达式推导</div><div class="line"><span class="number">2.</span> 简短变量声明左边的变量如非第一次被声明，则:=该语句对其做赋值行为</div></pre></td></tr></table></figure>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">名字 := 表达式</span><br><span class="line"><span class="number">1.</span> 变量的类型根据表达式推导</span><br><span class="line"><span class="number">2.</span> 简短变量声明左边的变量如非第一次被声明，则:=该语句对其做赋值行为</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>指针</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.</span> 取地址 x := &amp;y</div><div class="line"><span class="number">2.</span> 由指针修改值 *x = value</div><div class="line"><span class="number">3.</span> 每次对一个变量取地址，或者复制指针，我们都是为原变量创建了新的别名</div><div class="line"><span class="number">4.</span> 指针特别有价值的地方在于可以不用名字而访问一个变量</div></pre></td></tr></table></figure>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 取地址 x := &amp;y</span><br><span class="line"><span class="number">2.</span> 由指针修改值 *x = value</span><br><span class="line"><span class="number">3.</span> 每次对一个变量取地址，或者复制指针，我们都是为原变量创建了新的别名</span><br><span class="line"><span class="number">4.</span> 指针特别有价值的地方在于可以不用名字而访问一个变量</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>new 函数</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.</span> p := <span class="built_in">new</span>(<span class="keyword">int</span>)</div><div class="line"><span class="number">2.</span> 预定义函数，非关键字 在函数参数中<span class="built_in">new</span>被定义为某类型变量名时，在该函数声明周期内无法使用内置的<span class="built_in">new</span>函数</div></pre></td></tr></table></figure>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> p := <span class="built_in">new</span>(<span class="keyword">int</span>)</span><br><span class="line"><span class="number">2.</span> 预定义函数，非关键字 在函数参数中<span class="built_in">new</span>被定义为某类型变量名时，在该函数声明周期内无法使用内置的<span class="built_in">new</span>函数</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>声明周期</p>
 </li>
@@ -488,7 +489,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -501,7 +502,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -559,7 +560,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -708,7 +709,7 @@
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

@@ -100,6 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/11/06/func/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="内连回调代码使用回调函数时，为避免很多小函数的扩张弄乱程序控制流，通过使用生成器和协程可以使得回调函数内连在某个函数中，使得代码看上去更新是个普通的执行序列 Example123456789101112131415161718192021222324from queue import queuefrom functools import wrapsclass Async:    def __ini">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-11-06T09:29:31.990Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="func">
@@ -342,7 +343,7 @@
 
       
         <h2 id="内连回调"><a href="#内连回调" class="headerlink" title="内连回调"></a>内连回调</h2><p>代码使用回调函数时，为避免很多小函数的扩张弄乱程序控制流，通过使用生成器和协程可以使得回调函数内连在某个函数中，使得代码看上去更新是个普通的执行序列</p>
-<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> queue</div><div class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Async</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func, args)</span>:</span></div><div class="line">      self.func = func</div><div class="line">      self.args = args</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">inlined_async</span><span class="params">(func)</span>:</span></div><div class="line"><span class="meta">    @wraps(func)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></div><div class="line">        f = func(*args)</div><div class="line">        result_queue = Queue()</div><div class="line">        result_queue.put(<span class="keyword">None</span>)</div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">            result = result_queue.get()</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                a = f.send(result)</div><div class="line">                apply_async(a.func, a.args,callback=result_queue.put)</div><div class="line">            <span class="keyword">except</span> StopIteration:</div><div class="line">              <span class="keyword">break</span></div><div class="line">    retunr wrapper</div></pre></td></tr></table></figure>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> queue</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Async</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func, args)</span>:</span></span><br><span class="line">      self.func = func</span><br><span class="line">      self.args = args</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inlined_async</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args)</span>:</span></span><br><span class="line">        f = func(*args)</span><br><span class="line">        result_queue = Queue()</span><br><span class="line">        result_queue.put(<span class="keyword">None</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            result = result_queue.get()</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                a = f.send(result)</span><br><span class="line">                apply_async(a.func, a.args,callback=result_queue.put)</span><br><span class="line">            <span class="keyword">except</span> StopIteration:</span><br><span class="line">              <span class="keyword">break</span></span><br><span class="line">    retunr wrapper</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -478,7 +479,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -491,7 +492,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -549,7 +550,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -698,7 +699,7 @@
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

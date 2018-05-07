@@ -100,6 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/10/25/元编程-3/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="metaclass实现单例模式123456789101112class Singleton(type):    _instance = None    def __call__(self, *args, **kwargs):        if not self._instance:            self._instance = super().__call__(*args, **kwa">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-10-25T05:21:32.553Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="元编程-3">
@@ -341,8 +342,8 @@
       
 
       
-        <h2 id="metaclass实现单例模式"><a href="#metaclass实现单例模式" class="headerlink" title="metaclass实现单例模式"></a>metaclass实现单例模式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Singleton(type):</div><div class="line">    _instance = None</div><div class="line">    def __call__(self, *args, **kwargs):</div><div class="line">        if not self._instance:</div><div class="line">            self._instance = super().__call__(*args, **kwargs)</div><div class="line">            return self._instance</div><div class="line">        else:</div><div class="line">            return self._instance</div><div class="line"></div><div class="line">class Spam(metaclass=Singleton):</div><div class="line">    def __init__(self):</div><div class="line">        print(&apos;Ctreating  Spam&apos;)</div></pre></td></tr></table></figure>
-<h2 id="metaclass实现缓存实例"><a href="#metaclass实现缓存实例" class="headerlink" title="metaclass实现缓存实例"></a>metaclass实现缓存实例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import weakref</div><div class="line"></div><div class="line">class Cached(type):</div><div class="line">    def __init__(self, *args, **kwargs):</div><div class="line">        super().__init__(*args, **kwargs)</div><div class="line">        self._cache = weakref.WeakValueDictionary()</div><div class="line"></div><div class="line">    def __call__(self, *args, **kwargs):</div><div class="line">        if args in self._cache:</div><div class="line">            return self._cache.get(args)</div><div class="line">        else:</div><div class="line">            obj = super().__call__(*args, **kwargs)</div><div class="line">            self._cache[args] = obj</div><div class="line">            return obj</div><div class="line"></div><div class="line"></div><div class="line">class Spam(metaclass=Cached):</div><div class="line">    def __init__(self, name):</div><div class="line">        print(&apos;Ctreating Spam(&#123;!r&#125;)&apos;.format(name))</div><div class="line">        self.name = name</div></pre></td></tr></table></figure>
+        <h2 id="metaclass实现单例模式"><a href="#metaclass实现单例模式" class="headerlink" title="metaclass实现单例模式"></a>metaclass实现单例模式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Singleton(type):</span><br><span class="line">    _instance = None</span><br><span class="line">    def __call__(self, *args, **kwargs):</span><br><span class="line">        if not self._instance:</span><br><span class="line">            self._instance = super().__call__(*args, **kwargs)</span><br><span class="line">            return self._instance</span><br><span class="line">        else:</span><br><span class="line">            return self._instance</span><br><span class="line"></span><br><span class="line">class Spam(metaclass=Singleton):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        print(&apos;Ctreating  Spam&apos;)</span><br></pre></td></tr></table></figure>
+<h2 id="metaclass实现缓存实例"><a href="#metaclass实现缓存实例" class="headerlink" title="metaclass实现缓存实例"></a>metaclass实现缓存实例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import weakref</span><br><span class="line"></span><br><span class="line">class Cached(type):</span><br><span class="line">    def __init__(self, *args, **kwargs):</span><br><span class="line">        super().__init__(*args, **kwargs)</span><br><span class="line">        self._cache = weakref.WeakValueDictionary()</span><br><span class="line"></span><br><span class="line">    def __call__(self, *args, **kwargs):</span><br><span class="line">        if args in self._cache:</span><br><span class="line">            return self._cache.get(args)</span><br><span class="line">        else:</span><br><span class="line">            obj = super().__call__(*args, **kwargs)</span><br><span class="line">            self._cache[args] = obj</span><br><span class="line">            return obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Spam(metaclass=Cached):</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        print(&apos;Ctreating Spam(&#123;!r&#125;)&apos;.format(name))</span><br><span class="line">        self.name = name</span><br></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>使用元类实现多种实例创建模式通常要比不使用元类的方式优雅得多。假设不使用元类，可能需要将类隐藏在某些工厂函数后面</p>
 
       
@@ -479,7 +480,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -492,7 +493,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -550,7 +551,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -699,7 +700,7 @@
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->

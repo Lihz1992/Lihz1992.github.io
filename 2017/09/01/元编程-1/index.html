@@ -100,6 +100,7 @@
 <meta property="og:url" content="http://lihz1992.github.io/2017/09/01/元编程-1/index.html">
 <meta property="og:site_name" content="Lihz&#39;s workspace">
 <meta property="og:description" content="abstract 类元编程指在运行时创建或定制类的技巧 Python中，类是一等对象，因此任何时候都可以使用函数新建类，而无需使用class关键字 类装饰器也是函数，不过能审查、修改，甚至把被装饰的类替换成其他类 元类是类元编程最高级的工具: 使用元类可以创建具有某种特质的全新类种，例如我们见过的抽象基类 元类功能强大但更难掌握，类装饰器能使用更简单的方式解决很多问题">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-09-04T01:59:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fluent Python 类元编程1">
@@ -351,7 +352,7 @@
 </ol>
 <h2 id="类工厂函数"><a href="#类工厂函数" class="headerlink" title="类工厂函数"></a>类工厂函数</h2><ol>
 <li><p>type通常被视作函数使用，实则是一个类，传入三个参数可以新建一个类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">type(cls_name, bases, params_dict)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(cls_name, bases, params_dict)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>object是type的实例，type是object的子类</p>
 </li>
@@ -359,7 +360,7 @@
 </ol>
 <h2 id="定制描述符的类装饰器"><a href="#定制描述符的类装饰器" class="headerlink" title="定制描述符的类装饰器"></a>定制描述符的类装饰器</h2><ol>
 <li>类装饰器能以较简单的方式做到以前需要使用元类去做的事 情——创建类时定制类</li>
-<li>类装饰器的缺点是，只对直接依附的类有效，即被装饰的类的子类可能继承也可能不继承装饰器所做的改动，具体视改动的方式而定<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">def entity(cls):</div><div class="line">    for key, attr in cls.__dict__.items():</div><div class="line">        if isinstance(attr, Validated):</div><div class="line">            type_name = type(attr).__name__</div><div class="line">            attr.storage_name = attr.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(type_name, key)</div><div class="line">    return cls</div><div class="line"></div><div class="line"></div><div class="line">@entity</div><div class="line">class LineItem:</div><div class="line">    description = model.NonBlank()</div><div class="line">    weight = model.Quantity()</div><div class="line">    price = model.Quantity()</div><div class="line"></div><div class="line">    def __init__(self, description, weight, price):</div><div class="line">        self.description = description</div><div class="line">        self.weight = weight</div><div class="line">        self.price = price</div><div class="line"></div><div class="line">    def subtotal(self):</div><div class="line">        return self.weight * self.price</div></pre></td></tr></table></figure>
+<li>类装饰器的缺点是，只对直接依附的类有效，即被装饰的类的子类可能继承也可能不继承装饰器所做的改动，具体视改动的方式而定<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">def entity(cls):</span><br><span class="line">    for key, attr in cls.__dict__.items():</span><br><span class="line">        if isinstance(attr, Validated):</span><br><span class="line">            type_name = type(attr).__name__</span><br><span class="line">            attr.storage_name = attr.storage_name = &apos;_&#123;&#125;#&#123;&#125;&apos;.format(type_name, key)</span><br><span class="line">    return cls</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@entity</span><br><span class="line">class LineItem:</span><br><span class="line">    description = model.NonBlank()</span><br><span class="line">    weight = model.Quantity()</span><br><span class="line">    price = model.Quantity()</span><br><span class="line"></span><br><span class="line">    def __init__(self, description, weight, price):</span><br><span class="line">        self.description = description</span><br><span class="line">        self.weight = weight</span><br><span class="line">        self.price = price</span><br><span class="line"></span><br><span class="line">    def subtotal(self):</span><br><span class="line">        return self.weight * self.price</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h2 id="导入时-Vs-运行时"><a href="#导入时-Vs-运行时" class="headerlink" title="导入时 Vs 运行时"></a>导入时 Vs 运行时</h2><ol>
@@ -504,7 +505,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -517,7 +518,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -575,7 +576,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -724,7 +725,7 @@
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
