@@ -267,6 +267,133 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2018/05/08/interface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/08/interface/" itemprop="url">interface</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-08T09:39:31+08:00">
+                2018-05-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/08/interface/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/08/interface/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h2><ul>
+<li><code>Static, checked at compile time, dynamic when asked for</code><!--more><--></li>
+<li>接口类型存储了一对内容: 赋予该变量的具体值，以及该值的类型描述符</li>
+</ul>
+<h3 id="接口断言"><a href="#接口断言" class="headerlink" title="接口断言"></a>接口断言</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Stringer <span class="keyword">interface</span>&#123;</span><br><span class="line">    String() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ToString</span><span class="params">(any <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span>&#123;</span><br><span class="line">    <span class="comment">// 接口断言常见用例</span></span><br><span class="line">    <span class="keyword">if</span> v, ok := any.(Stringer); ok&#123;</span><br><span class="line">        <span class="keyword">return</span> v.String()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2018/05/07/reflect-of-go/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -347,26 +474,29 @@
         
           
             <h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>反射指程序在运行时通过类型，查看并操纵其自身结构的能力</p>
+<!--more><-->
 <h2 id="interface"><a href="#interface" class="headerlink" title="interface{}"></a>interface{}</h2><p>空方法集，任何值皆满足该接口</p>
 <h2 id="反射法则"><a href="#反射法则" class="headerlink" title="反射法则"></a>反射法则</h2><ul>
 <li>反射是从接口值到反射对象</li>
 <li>反射对象可以反射出接口值，接口值也可以反射出反射对象</li>
 <li>反射对象可否被修改依赖于其值是否可设置</li>
 </ul>
-<h3 id="反射是从接口值到反射对象"><a href="#反射是从接口值到反射对象" class="headerlink" title="反射是从接口值到反射对象"></a>反射是从接口值到反射对象</h3><h4 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h4><ol>
+<h3 id="reflect包"><a href="#reflect包" class="headerlink" title="reflect包"></a><code>reflect</code>包</h3><h4 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h4><ol>
 <li><code>reflect.TypeOf()</code></li>
-<li><code>reflect.ValueOf()</code></li>
+<li><code>reflect.ValueOf()</code>    返回<code>Value</code> struct, 接口值-&gt;反射对象</li>
+<li><code>Value{}.Interface()</code>  返回<code>interface{}</code>, 方法2的镜像，反射对象-&gt;接口值</li>
 </ol>
-<h4 id="Attributes"><a href="#Attributes" class="headerlink" title="Attributes"></a>Attributes</h4><ol>
-<li><code>Value</code></li>
-<li><code>Type</code></li>
-<li><code>Kind</code></li>
-</ol>
-<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><ol>
+<h4 id="Attributes"><a href="#Attributes" class="headerlink" title="Attributes"></a>Attributes</h4><h5 id="Value-反射值"><a href="#Value-反射值" class="headerlink" title="Value 反射值"></a><code>Value</code> 反射值</h5><ul>
+<li><code>CanSet()</code> 获取反射值的可设置性</li>
+<li><code>Kind()</code></li>
+<li><code>Type()</code></li>
+<li><code>Len()</code></li>
+<li><code>Index()</code></li>
+</ul>
+<h5 id="Type-反射类型"><a href="#Type-反射类型" class="headerlink" title="Type  反射类型"></a><code>Type</code>  反射类型</h5><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ol>
 <li><code>Value</code>的“获取者”和“设置者”方法会在能够保存其值的最大类型上进行操作，如<code>int64</code>用于所有带符号整数</li>
-<li></li>
 </ol>
-
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T <span class="keyword">struct</span>&#123;</span><br><span class="line">    A <span class="keyword">int</span></span><br><span class="line">    B <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line">t := T&#123;<span class="number">123</span>, <span class="string">"abc"</span>&#125;</span><br><span class="line">s := reflect.ValueOf(&amp;t).Elem()</span><br><span class="line">typeOfT := s.Type()</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; s.NumField(); i++ &#123;</span><br><span class="line">    f := s.Field(i)</span><br><span class="line">    fmt.Printf(<span class="string">"%d: %s %s = %v\n"</span>, i,</span><br><span class="line">        typeOfT.Field(i).Name, f.Type(), f.Interface())</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Output</span></span><br><span class="line"><span class="comment">// 0: A int = 23</span></span><br><span class="line"><span class="comment">// 1: B string = skidoo</span></span><br></pre></td></tr></table></figure>
           
         
       
@@ -428,7 +558,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/07/go-concurrency-pipelines/" itemprop="url">go concurrency pipelines</a></h1>
+                <a class="post-title-link" href="/2018/04/07/go-concurrency-pipelines/" itemprop="url">Go并发设计模式 pipelines</a></h1>
         
 
         <div class="post-meta">
@@ -1398,133 +1528,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/10/24/sanic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/24/sanic/" itemprop="url">sanic</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T16:34:31+08:00">
-                2017-10-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/24/sanic/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/24/sanic/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>Sanic is a Flask-like Python 3.5+ web server that’s written to go fast.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/24/sanic/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1574,7 +1577,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1587,7 +1590,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
