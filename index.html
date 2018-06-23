@@ -267,133 +267,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2018/05/08/interface/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/08/interface/" itemprop="url">interface</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-08T09:39:31+08:00">
-                2018-05-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/08/interface/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/08/interface/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h2><ul>
-<li><code>Static, checked at compile time, dynamic when asked for</code><!--more><--></li>
-<li>接口类型存储了一对内容: 赋予该变量的具体值，以及该值的类型描述符</li>
-</ul>
-<h3 id="接口断言"><a href="#接口断言" class="headerlink" title="接口断言"></a>接口断言</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Stringer <span class="keyword">interface</span>&#123;</span><br><span class="line">    String() <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ToString</span><span class="params">(any <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span>&#123;</span><br><span class="line">    <span class="comment">// 接口断言常见用例</span></span><br><span class="line">    <span class="keyword">if</span> v, ok := any.(Stringer); ok&#123;</span><br><span class="line">        <span class="keyword">return</span> v.String()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2018/05/07/reflect-of-go/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -472,400 +345,14 @@
 
       
         
-          
-            <h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>反射指程序在运行时通过类型，查看并操纵其自身结构的能力</p>
-<!--more><-->
-<h2 id="interface"><a href="#interface" class="headerlink" title="interface{}"></a>interface{}</h2><p>空方法集，任何值皆满足该接口</p>
-<h2 id="反射法则"><a href="#反射法则" class="headerlink" title="反射法则"></a>反射法则</h2><ul>
-<li>反射是从接口值到反射对象</li>
-<li>反射对象可以反射出接口值，接口值也可以反射出反射对象</li>
-<li>反射对象可否被修改依赖于其值是否可设置</li>
-</ul>
-<h3 id="reflect包"><a href="#reflect包" class="headerlink" title="reflect包"></a><code>reflect</code>包</h3><h4 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h4><ol>
-<li><code>reflect.TypeOf()</code></li>
-<li><code>reflect.ValueOf()</code>    返回<code>Value</code> struct, 接口值-&gt;反射对象</li>
-<li><code>Value{}.Interface()</code>  返回<code>interface{}</code>, 方法2的镜像，反射对象-&gt;接口值</li>
-</ol>
-<h4 id="Attributes"><a href="#Attributes" class="headerlink" title="Attributes"></a>Attributes</h4><h5 id="Value-反射值"><a href="#Value-反射值" class="headerlink" title="Value 反射值"></a><code>Value</code> 反射值</h5><ul>
-<li><code>CanSet()</code> 获取反射值的可设置性</li>
-<li><code>Kind()</code></li>
-<li><code>Type()</code></li>
-<li><code>Len()</code></li>
-<li><code>Index()</code></li>
-</ul>
-<h5 id="Type-反射类型"><a href="#Type-反射类型" class="headerlink" title="Type  反射类型"></a><code>Type</code>  反射类型</h5><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ol>
-<li><code>Value</code>的“获取者”和“设置者”方法会在能够保存其值的最大类型上进行操作，如<code>int64</code>用于所有带符号整数</li>
-</ol>
-<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T <span class="keyword">struct</span>&#123;</span><br><span class="line">    A <span class="keyword">int</span></span><br><span class="line">    B <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line">t := T&#123;<span class="number">123</span>, <span class="string">"abc"</span>&#125;</span><br><span class="line">s := reflect.ValueOf(&amp;t).Elem()</span><br><span class="line">typeOfT := s.Type()</span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; s.NumField(); i++ &#123;</span><br><span class="line">    f := s.Field(i)</span><br><span class="line">    fmt.Printf(<span class="string">"%d: %s %s = %v\n"</span>, i,</span><br><span class="line">        typeOfT.Field(i).Name, f.Type(), f.Interface())</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Output</span></span><br><span class="line"><span class="comment">// 0: A int = 23</span></span><br><span class="line"><span class="comment">// 1: B string = skidoo</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2018/04/07/go-concurrency-pipelines/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/07/go-concurrency-pipelines/" itemprop="url">Go并发设计模式 pipelines</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T22:16:34+08:00">
-                2018-04-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/07/go-concurrency-pipelines/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/04/07/go-concurrency-pipelines/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2018/04/07/blockchain-bgp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/07/blockchain-bgp/" itemprop="url">blockchain_bgp</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T19:34:18+08:00">
-                2018-04-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/07/blockchain-bgp/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/04/07/blockchain-bgp/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="拜占庭将军问题"><a href="#拜占庭将军问题" class="headerlink" title="拜占庭将军问题"></a>拜占庭将军问题</h2><p>用于解释一致性问题的一个虚构模型: 边境有多个将军，其中存在1个以上叛徒，叛徒将努力向不同将军发送不同消息试图干扰一致性的达成。在此情境下，如何让忠诚的将军达成行动的一致</p>
-<h3 id="BFT-Byzantine-fault-tolerant-算法"><a href="#BFT-Byzantine-fault-tolerant-算法" class="headerlink" title="BFT(Byzantine fault tolerant)算法"></a>BFT(Byzantine fault tolerant)算法</h3><p>假设节点总数N，叛变将军数F，则当<code>N &gt;= 3F+1</code> 时，问题有解</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2018/03/12/coroutine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lihz">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lihz's workspace">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/12/coroutine/" itemprop="url">coroutine</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:34:32+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/12/coroutine/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/03/12/coroutine/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
+          <h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>反射指程序在运行时通过类型，查看并操纵其自身结构的能力</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/07/reflect-of-go/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1528,6 +1015,543 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/10/24/sanic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/24/sanic/" itemprop="url">sanic</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T16:34:31+08:00">
+                2017-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/24/sanic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/24/sanic/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>Sanic is a Flask-like Python 3.5+ web server that’s written to go fast.</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/24/sanic/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/09/18/ssl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/18/ssl/" itemprop="url">SSL/TLS</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-18T15:36:40+08:00">
+                2017-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/18/ssl/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/18/ssl/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="SSL-TLS概览"><a href="#SSL-TLS概览" class="headerlink" title="SSL/TLS概览"></a>SSL/TLS概览</h2><ol>
+<li>SSL:(Secure Socket Layer,安全套接字层)，利用数据加密技术，确保数据在网络上传输过程中不会被截取。当前版本3.0，被广泛的用于Web浏览器与服务器之间的身份认证和加密数据传输。<ul>
+<li>SSL协议位于TCP/IP协议与各种应用层协议之间，为数据通讯提供安全支持</li>
+<li>SSL协议可分为两层。SSL记录协议(SSL Record Protocol)：建立在可靠的传输协议(如TCP)之上，为高层协议提供数据封装、压缩、加密等基本功能的支持</li>
+<li>SSL握手协议(SSL Handshake Protocol):建立在SSL记录协议之上，用于实际的数据传输凯施前，通讯双方进行身份验证、协商加密算法、交换加密密钥等</li>
+</ul>
+</li>
+<li>TLS:(Transport Layer Security, 传输层安全协议)，用于两个应用程序之间提供保密性和数据完整性<ul>
+<li>TLS1.0是IEFT制定的一种新协议，建立在SSL3.0协议规范之上，可以理解为SSL 3.1</li>
+<li>该协议由两层组成：TLS记录协议和TLS握手协议</li>
+</ul>
+</li>
+<li>SSL/TLS提供的服务主要有：<ul>
+<li>认证用户和服务器，确保数据发送到正确的客户机和服务器</li>
+<li>加密数据以防止数据中途被窃取</li>
+<li>维护数据的完整性，确保数据在传输过程中不被改变
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/18/ssl/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/09/05/rb-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/05/rb-tree/" itemprop="url">红黑树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-05T13:19:36+08:00">
+                2017-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/05/rb-tree/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/05/rb-tree/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><ol>
+<li>特殊的二叉查找树，每个节点上都有存储位表示节点的颜色。不论插入还是删除操作都可以在O(lgn)内实现。</li>
+<li>红黑树主要用于存储有序的数据</li>
+</ol>
+<h3 id="红黑树特性"><a href="#红黑树特性" class="headerlink" title="红黑树特性"></a>红黑树特性</h3><ol>
+<li>每个节点或者是黑色，或者是红色</li>
+<li>根节点是黑色</li>
+<li>每个叶子节点(NIL)是黑色(空(NIL或null)节点)</li>
+<li>如果一个节点是红色，则它的子节点必须是黑色的</li>
+<li>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点</li>
+</ol>
+<h3 id="红黑树基本操作：左旋和右旋"><a href="#红黑树基本操作：左旋和右旋" class="headerlink" title="红黑树基本操作：左旋和右旋"></a>红黑树基本操作：左旋和右旋</h3><p>红黑树的基本操作是添加、删除。在对红黑树进行添加或删除之后，都会做旋转操作，以保证红黑树的特性</p>
+<h4 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a>左旋</h4><p>对x进行左旋，意味着x将变成一个左节点</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lihz1992.github.io/2017/09/04/元编程-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lihz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/IMG_0645.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lihz's workspace">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/04/元编程-2/" itemprop="url">Fluent Python 类元编程2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T09:59:35+08:00">
+                2017-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/04/元编程-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/04/元编程-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="元类基础"><a href="#元类基础" class="headerlink" title="元类基础"></a>元类基础</h2><ol>
+<li>元类是制造类的工厂。Python中，类是对象，则必然是另外某个类的实例</li>
+<li>type类是大多数内置的类和用户定义的类的元类</li>
+<li>为了避免无限回溯，type是其自身的实例</li>
+<li>object是type的实例，type是object的子类(解释器初始化要做一次自举操作？)</li>
+<li>所有类都直接或间接地是type的实例，只有元类同时是type的子类</li>
+<li>元类可以作为制造类的工厂
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/04/元编程-2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1577,7 +1601,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1590,7 +1614,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
